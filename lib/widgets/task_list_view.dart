@@ -1,27 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import '../models/task_group.dart';
+
+// Project imports:
 import '../models/task.dart';
+import '../models/task_group.dart';
 
 class TaskListView extends StatelessWidget {
-  const TaskListView({Key? key}) : super(key: key);
+  final TaskGroup taskGroup;
+
+  const TaskListView({Key? key, required this.taskGroup}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TaskGroup taskGroup = TaskGroup(
-      'My Tasks',
-      [
-        Task('do 69 pushup', '', false),
-        Task('do 69 pullup', '', false),
-        Task('do 69km run', '', false),
-        Task('buy iphone', '', false),
-        Task('sell kidney', '', false),
-      ],
-    );
-
     Widget taskGroupTitleSection = Container(
-      height: kTextTabBarHeight,
+      height: kToolbarHeight,
       padding: EdgeInsets.all(8.0),
       child: Center(
         child: Text(
@@ -34,14 +28,20 @@ class TaskListView extends StatelessWidget {
       ),
     );
 
-    return ListView(
-      children: [
-        taskGroupTitleSection,
-        Divider(
-          height: 1.0,
-        ),
-        ...taskGroup.tasks.map((task) => _buildTaskItem(task)).toList(),
-      ],
+    return Scrollbar(
+      interactive: true,
+      child: ListView(
+        shrinkWrap: true,
+        // padding: EdgeInsets.only(top: 0.0),
+        children: [
+          Divider(
+            thickness: 1.0,
+            height: 1.0,
+          ),
+          taskGroupTitleSection,
+          ...taskGroup.tasks.map((task) => _buildTaskItem(task)).toList(),
+        ],
+      ),
     );
   }
 

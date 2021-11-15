@@ -1,20 +1,52 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:task_n_note/screens/task_group_edit_screen.dart';
-import '../widgets/task_list_view.dart';
 
-class HomeScreen extends StatelessWidget {
+// Package imports:
+import 'package:google_fonts/google_fonts.dart';
+import 'package:task_n_note/models/task_group.dart';
+
+// Project imports:
+import '../widgets/note_list_view.dart';
+import '../widgets/task_group_sheet.dart';
+import '../widgets/task_list_view.dart';
+import 'add_task_screen.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentTabIndex = 0;
+  List<TaskGroup> taskGroups = [
+    TaskGroup(title: 'My Tasks'),
+  ];
+
+  late TaskGroup currentTaskGroup;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentTaskGroup = taskGroups.first;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Row currentBottomAppBarItems = Row(
+      mainAxisSize: MainAxisSize.max,
+      children: _getCurrentBottomAppBarItems(),
+    );
     return DefaultTabController(
       length: 2,
-      child: SafeArea(
-        child: Scaffold(
-          body: NestedScrollView(
+      initialIndex: currentTabIndex,
+      child: Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
@@ -36,6 +68,13 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                   bottom: TabBar(
+                    onTap: (value) {
+                      if (currentTabIndex == value) return;
+
+                      setState(() {
+                        currentTabIndex = value;
+                      });
+                    },
                     labelColor: Colors.indigoAccent,
                     indicatorColor: Colors.indigoAccent,
                     indicatorSize: TabBarIndicatorSize.label,
@@ -53,124 +92,127 @@ class HomeScreen extends StatelessWidget {
             },
             body: TabBarView(
               children: <Widget>[
-                TaskListView(),
-                Container(),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.add),
-            backgroundColor: Colors.indigoAccent,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomAppBar(
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => TaskGroupEditScreen(),
-                    //   ),
-                    // );
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            ListTile(
-                              title: Text(
-                                'Task List',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.add)),
-                            ),
-                            Divider(
-                              height: 1.0,
-                            ),
-                            Expanded(
-                              child: Scrollbar(
-                                child: ListView(
-                                  children: [
-                                    ListTile(
-                                      title: Text('My Tasks'),
-                                      selected: true,
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      title: Text('Custom tasks'),
-                                      onTap: () {},
-                                    ),
-                                    ListTile(
-                                      title: Text('Grocery'),
-                                      onTap: () {},
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15.0),
-                          topRight: Radius.circular(15.0),
-                        ),
-                      ),
-                    );
-                  },
+                TaskListView(
+                  taskGroup: currentTaskGroup,
                 ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.more_vert),
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.done_all),
-                              title: Text('Mark all as complete'),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.clear_all),
-                              title: Text('Clear all completed'),
-                              onTap: () {},
-                            ),
-                          ],
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15.0),
-                          topRight: Radius.circular(15.0),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                NoteListView(),
               ],
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _moveToAddTaskScreen,
+          child: Icon(Icons.add),
+          backgroundColor: Colors.indigoAccent,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: currentTabIndex == 0
+            ? buildTaskBottomAppBar()
+            : BottomAppBar(
+                shape: CircularNotchedRectangle(),
+                notchMargin: 5.0,
+                child: currentBottomAppBarItems,
+              ),
       ),
     );
+  }
+
+  void showTaskGroupSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return TaskGroupSheet(
+          taskGroups: taskGroups,
+          currentTaskGroupIndex: taskGroups.indexOf(currentTaskGroup),
+        );
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10.0),
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  void _moveToAddTaskScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTaskScreen(),
+      ),
+    );
+  }
+
+  List<Widget> _getCurrentBottomAppBarItems() {
+    // notes
+    return [
+      IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {},
+      ),
+      Spacer(),
+      IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.search),
+      ),
+      IconButton(
+        icon: Icon(Icons.more_vert),
+        onPressed: () {},
+      ),
+    ];
+  }
+
+  Widget buildTaskBottomAppBar() {
+    return Builder(builder: (context) {
+      return BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 5.0,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: showTaskGroupSheet,
+            ),
+            Spacer(),
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 15.0,
+                        ),
+                        ListTile(
+                          // leading: Icon(Icons.done_all),
+                          title: Text('Mark all as complete'),
+                          onTap: () {},
+                        ),
+                        ListTile(
+                          // leading: Icon(Icons.clear_all),
+                          title: Text('Clear all completed'),
+                          onTap: () {},
+                        ),
+                      ],
+                    );
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
