@@ -3,10 +3,10 @@ import 'dart:collection';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import '../models/todo.dart';
 
 // Project imports:
 import '../models/task_group.dart';
+import '../models/todo.dart';
 
 class TasksModel extends ChangeNotifier {
   late List<TaskGroup> _taskGroups;

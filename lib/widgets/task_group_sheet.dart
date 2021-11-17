@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import '../provider/tasks_model.dart';
 import '../models/task_group.dart';
+import '../provider/tasks_model.dart';
 import '../screens/add_task_group_screen.dart';
 
 class TaskGroupSheet extends StatefulWidget {

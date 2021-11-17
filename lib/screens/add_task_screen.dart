@@ -2,9 +2,13 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
-import 'package:task_n_note/models/todo.dart';
-import 'package:task_n_note/provider/tasks_model.dart';
+
+// Project imports:
+import '../models/todo.dart';
+import '../provider/tasks_model.dart';
 
 class AddTaskScreen extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();

@@ -2,12 +2,14 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:provider/provider.dart';
-import '../provider/tasks_model.dart';
 
 // Project imports:
 import '../models/todo.dart';
-import '../models/task_group.dart';
+import '../provider/tasks_model.dart';
+import '../screens/edit_task_screen.dart';
 
 class TaskListView extends StatelessWidget {
   const TaskListView({Key? key}) : super(key: key);
@@ -50,19 +52,28 @@ class TaskListView extends StatelessWidget {
   }
 
   Widget _buildTaskItem(Todo task) {
-    return Builder(builder: (context) {
-      return ListTile(
-        leading: IconButton(
-          icon: Icon(task.isComplete ? Icons.check : Icons.circle_outlined),
-          onPressed: () {},
-        ),
-        title: Text(task.title),
-        onTap: () {
-          task.isComplete = !task.isComplete;
+    return Builder(
+      builder: (context) {
+        return ListTile(
+          leading: IconButton(
+            icon: Icon(task.isComplete ? Icons.check : Icons.circle_outlined),
+            onPressed: () {
+              task.isComplete = !task.isComplete;
 
-          Provider.of<TasksModel>(context, listen: false).applyChanges();
-        },
-      );
-    });
+              Provider.of<TasksModel>(context, listen: false).syncChanges();
+            },
+          ),
+          title: Text(task.title),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditTaskScreen(todo: task),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }
