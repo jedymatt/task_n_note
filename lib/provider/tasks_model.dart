@@ -51,7 +51,7 @@ class TasksModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void applyChanges() {
+  void syncChanges() {
     notifyListeners();
   }
 
