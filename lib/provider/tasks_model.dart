@@ -3,6 +3,7 @@ import 'dart:collection';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import '../models/todo.dart';
 
 // Project imports:
 import '../models/task_group.dart';
@@ -51,6 +52,12 @@ class TasksModel extends ChangeNotifier {
   }
 
   void applyChanges() {
+    notifyListeners();
+  }
+
+  /// Add todo  in the current task group
+  void addTodo(Todo todo) {
+    _currentTaskGroup.todos.add(todo);
     notifyListeners();
   }
 }
