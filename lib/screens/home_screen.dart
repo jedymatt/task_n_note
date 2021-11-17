@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:google_fonts/google_fonts.dart';
-import 'package:task_n_note/models/task_group.dart';
 
 // Project imports:
+import 'package:task_n_note/models/task_group.dart';
 import '../widgets/note_list_view.dart';
 import '../widgets/task_group_sheet.dart';
 import '../widgets/task_list_view.dart';
@@ -92,9 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             body: TabBarView(
               children: <Widget>[
-                TaskListView(
-                  taskGroup: currentTaskGroup,
-                ),
+                TaskListView(),
                 NoteListView(),
               ],
             ),
@@ -121,10 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return TaskGroupSheet(
-          taskGroups: taskGroups,
-          currentTaskGroupIndex: taskGroups.indexOf(currentTaskGroup),
-        );
+        return TaskGroupSheet();
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(

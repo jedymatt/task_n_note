@@ -2,17 +2,18 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:task_n_note/screens/add_task_group_screen.dart';
+
+// Package imports:
+import 'package:provider/provider.dart';
+
+// Project imports:
+import '../provider/tasks_model.dart';
 import '../models/task_group.dart';
+import '../screens/add_task_group_screen.dart';
 
 class TaskGroupSheet extends StatefulWidget {
-  final List<TaskGroup> taskGroups;
-  final int currentTaskGroupIndex;
-
   const TaskGroupSheet({
     Key? key,
-    required this.taskGroups,
-    required this.currentTaskGroupIndex,
   }) : super(key: key);
 
   @override
@@ -20,35 +21,37 @@ class TaskGroupSheet extends StatefulWidget {
 }
 
 class _TaskGroupSheetState extends State<TaskGroupSheet> {
-  late int currentIndex;
-
-  @override
-  void initState() {
-    super.initState();
-
-    currentIndex = widget.currentTaskGroupIndex;
-  }
-
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       maxChildSize: 0.9,
       expand: false,
       builder: (context, scrollController) {
-        return ListView(
-          controller: scrollController,
-          children: [
-            SizedBox(
-              height: 10.0,
-            ),
-            ...widget.taskGroups
-                .map((taskGroup) => _buildTaskGroupTile(taskGroup))
-                .toList(),
-            Divider(
-              thickness: 1.0,
-            ),
-            _buildAddTaskGroup(),
-          ],
+        // List<TaskGroup> taskGroups =
+        //     Provider.of<TaskGroupListProvider>(context).taskGroups;
+
+        // int currentIndex =
+        //     Provider.of<TaskGroupListProvider>(context).selectedIndex;
+
+        return Consumer<TasksModel>(
+          builder: (context, tasks, child) {
+            return ListView(
+              controller: scrollController,
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                ...tasks.taskGroups
+                    .map((taskGroup) => _buildTaskGroupTile(
+                        taskGroup, taskGroup == tasks.currentTaskGroup))
+                    .toList(),
+                Divider(
+                  thickness: 1.0,
+                ),
+                _buildAddTaskGroup(),
+              ],
+            );
+          },
         );
       },
     );
@@ -73,14 +76,16 @@ class _TaskGroupSheetState extends State<TaskGroupSheet> {
     );
   }
 
-  Widget _buildTaskGroupTile(TaskGroup taskGroup) {
+  Widget _buildTaskGroupTile(TaskGroup taskGroup, bool isSelected) {
     return ListTile(
       title: Text(taskGroup.title),
-      selected: widget.taskGroups.indexOf(taskGroup) == currentIndex,
+      selected: isSelected,
       onTap: () {
-        setState(() {
-          currentIndex = widget.taskGroups.indexOf(taskGroup);
-        });
+        if (isSelected) return;
+        Provider.of<TasksModel>(context, listen: false)
+            .updateCurrentTaskGroup(taskGroup);
+
+        Navigator.pop(context);
       },
     );
   }

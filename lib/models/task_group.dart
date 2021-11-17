@@ -1,9 +1,9 @@
 // Project imports:
-import 'task.dart';
+import 'todo.dart';
 
 class TaskGroup {
   String title;
-  List<Task> tasks;
+  List<Todo> todos;
 
-  TaskGroup({required this.title, List<Task>? tasks}) : tasks = [];
+  TaskGroup({required this.title, List<Todo>? todos}) : todos = [];
 }

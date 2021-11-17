@@ -1,9 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:provider/provider.dart';
+
+// Project imports:
+import '../models/task_group.dart';
+import '../provider/tasks_model.dart';
+
 class AddTaskGroupScreen extends StatelessWidget {
-  const AddTaskGroupScreen({Key? key}) : super(key: key);
+  final TextEditingController titleController = TextEditingController();
+
+  AddTaskGroupScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +30,12 @@ class AddTaskGroupScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              TaskGroup taskGroup = TaskGroup(
+                title: titleController.text,
+              );
+              Provider.of<TasksModel>(context, listen: false)
+                  .addTaskGroup(taskGroup);
+
               Navigator.pop(context);
             },
             tooltip: "Save",
@@ -28,6 +44,7 @@ class AddTaskGroupScreen extends StatelessWidget {
         ],
       ),
       body: TextFormField(
+        controller: titleController,
         autofocus: true,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(15.0),

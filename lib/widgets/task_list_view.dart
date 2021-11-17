@@ -2,57 +2,67 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/tasks_model.dart';
 
 // Project imports:
-import '../models/task.dart';
+import '../models/todo.dart';
 import '../models/task_group.dart';
 
 class TaskListView extends StatelessWidget {
-  final TaskGroup taskGroup;
-
-  const TaskListView({Key? key, required this.taskGroup}) : super(key: key);
+  const TaskListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget taskGroupTitleSection = Container(
-      height: kToolbarHeight,
-      padding: EdgeInsets.all(8.0),
-      child: Center(
-        child: Text(
-          taskGroup.title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+    return Consumer<TasksModel>(
+      builder: (context, tasksModel, child) {
+        return Scrollbar(
+          interactive: true,
+          child: ListView(
+            shrinkWrap: true,
+            // padding: EdgeInsets.only(top: 0.0),
+            children: [
+              Divider(
+                thickness: 1.0,
+                height: 1.0,
+              ),
+              Container(
+                height: kToolbarHeight,
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    tasksModel.currentTaskGroup.title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+              ...tasksModel.currentTaskGroup.todos
+                  .map((task) => _buildTaskItem(task))
+                  .toList(),
+            ],
           ),
-        ),
-      ),
-    );
-
-    return Scrollbar(
-      interactive: true,
-      child: ListView(
-        shrinkWrap: true,
-        // padding: EdgeInsets.only(top: 0.0),
-        children: [
-          Divider(
-            thickness: 1.0,
-            height: 1.0,
-          ),
-          taskGroupTitleSection,
-          ...taskGroup.tasks.map((task) => _buildTaskItem(task)).toList(),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildTaskItem(Task task) {
-    return ListTile(
-      leading: IconButton(
-        icon: Icon(task.isDone ? Icons.check : Icons.circle_outlined),
-        onPressed: () {},
-      ),
-      title: Text(task.title),
-      onTap: () {},
-    );
+  Widget _buildTaskItem(Todo task) {
+    return Builder(builder: (context) {
+      return ListTile(
+        leading: IconButton(
+          icon: Icon(task.isComplete ? Icons.check : Icons.circle_outlined),
+          onPressed: () {},
+        ),
+        title: Text(task.title),
+        onTap: () {
+          task.isComplete = !task.isComplete;
+
+          Provider.of<TasksModel>(context, listen: false).applyChanges();
+        },
+      );
+    });
   }
 }

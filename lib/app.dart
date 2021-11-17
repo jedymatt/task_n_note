@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 // Project imports:
+import '../provider/tasks_model.dart';
 import './screens/home_screen.dart';
 
 class App extends StatelessWidget {
@@ -14,11 +16,18 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        textTheme: GoogleFonts.nunitoTextTheme(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => TasksModel(),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          textTheme: GoogleFonts.nunitoTextTheme(),
+        ),
+        home: HomeScreen(),
       ),
-      home: HomeScreen(),
     );
   }
 }
