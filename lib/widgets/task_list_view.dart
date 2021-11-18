@@ -33,7 +33,7 @@ class TaskListView extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    tasksModel.currentTaskGroup.title,
+                    tasksModel.currentTodoList.title,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -41,7 +41,7 @@ class TaskListView extends StatelessWidget {
                   ),
                 ),
               ),
-              ...tasksModel.currentTaskGroup.todos
+              ...tasksModel.currentTodoList.todos
                   .map((task) => _buildTaskItem(task))
                   .toList(),
             ],

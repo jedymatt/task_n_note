@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import '../models/task_group.dart';
+import '../models/todo_list.dart';
 import '../provider/tasks_model.dart';
 
 class AddTaskGroupScreen extends StatelessWidget {
@@ -30,11 +30,11 @@ class AddTaskGroupScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              TaskGroup taskGroup = TaskGroup(
+              TodoList taskGroup = TodoList(
                 title: titleController.text,
               );
               Provider.of<TasksModel>(context, listen: false)
-                  .addTaskGroup(taskGroup);
+                  .addTodoList(taskGroup);
 
               Navigator.pop(context);
             },

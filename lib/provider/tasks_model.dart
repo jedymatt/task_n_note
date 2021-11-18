@@ -5,49 +5,49 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import '../models/task_group.dart';
+import '../models/todo_list.dart';
 import '../models/todo.dart';
 
 class TasksModel extends ChangeNotifier {
-  late List<TaskGroup> _taskGroups;
-  late TaskGroup _currentTaskGroup;
+  late List<TodoList> _todoLists;
+  late TodoList _currentTodoList;
 
   TasksModel() {
-    _taskGroups = [
-      TaskGroup(title: 'My Tasks'),
+    _todoLists = [
+      TodoList(title: 'My Tasks'),
     ];
 
-    _currentTaskGroup = _taskGroups.first;
+    _currentTodoList = _todoLists.first;
   }
 
-  UnmodifiableListView<TaskGroup> get taskGroups =>
-      UnmodifiableListView(_taskGroups);
+  UnmodifiableListView<TodoList> get todoLists =>
+      UnmodifiableListView(_todoLists);
 
-  TaskGroup get currentTaskGroup => _currentTaskGroup;
+  TodoList get currentTodoList => _currentTodoList;
 
-  void addTaskGroup(TaskGroup taskGroup) {
-    _taskGroups.add(taskGroup);
+  void addTodoList(TodoList todoList) {
+    _todoLists.add(todoList);
     notifyListeners();
   }
 
-  void removeTaskGroup(TaskGroup taskGroup) {
-    _taskGroups.remove(taskGroup);
+  void removeTodoList(TodoList todoList) {
+    _todoLists.remove(todoList);
     notifyListeners();
   }
 
-  void updateTaskGroupByIndex(int index, TaskGroup newTaskGroup) {
-    _taskGroups[index] = newTaskGroup;
-    notifyListeners();
-  }
+  // void updateTaskGroupByIndex(int index, TodoList newTaskGroup) {
+  //   _todoLists[index] = newTaskGroup;
+  //   notifyListeners();
+  // }
 
-  void updateTaskGroup(TaskGroup oldTaskGroup, TaskGroup newTaskGroup) {
-    int index = _taskGroups.indexOf(oldTaskGroup);
-    _taskGroups[index] = newTaskGroup;
-    notifyListeners();
-  }
+  // void updateTaskGroup(TodoList oldTaskGroup, TodoList newTaskGroup) {
+  //   int index = _todoLists.indexOf(oldTaskGroup);
+  //   _todoLists[index] = newTaskGroup;
+  //   notifyListeners();
+  // }
 
-  void updateCurrentTaskGroup(TaskGroup newCurrentTaskGroup) {
-    _currentTaskGroup = newCurrentTaskGroup;
+  void setCurrentTodoList(TodoList todoList) {
+    _currentTodoList = todoList;
     notifyListeners();
   }
 
@@ -57,7 +57,11 @@ class TasksModel extends ChangeNotifier {
 
   /// Add todo  in the current task group
   void addTodo(Todo todo) {
-    _currentTaskGroup.todos.add(todo);
+    _currentTodoList.todos.add(todo);
     notifyListeners();
+  }
+
+  void updateTodo(Todo todo) {
+    int index = _currentTodoList.todos.indexOf(todo);
   }
 }

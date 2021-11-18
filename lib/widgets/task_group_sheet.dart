@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import '../models/task_group.dart';
+import '../models/todo_list.dart';
 import '../provider/tasks_model.dart';
 import '../screens/add_task_group_screen.dart';
 
@@ -34,16 +34,16 @@ class _TaskGroupSheetState extends State<TaskGroupSheet> {
         //     Provider.of<TaskGroupListProvider>(context).selectedIndex;
 
         return Consumer<TasksModel>(
-          builder: (context, tasks, child) {
+          builder: (context, tasksModel, child) {
             return ListView(
               controller: scrollController,
               children: [
                 SizedBox(
                   height: 10.0,
                 ),
-                ...tasks.taskGroups
+                ...tasksModel.todoLists
                     .map((taskGroup) => _buildTaskGroupTile(
-                        taskGroup, taskGroup == tasks.currentTaskGroup))
+                        taskGroup, taskGroup == tasksModel.currentTodoList))
                     .toList(),
                 Divider(
                   thickness: 1.0,
@@ -76,14 +76,14 @@ class _TaskGroupSheetState extends State<TaskGroupSheet> {
     );
   }
 
-  Widget _buildTaskGroupTile(TaskGroup taskGroup, bool isSelected) {
+  Widget _buildTaskGroupTile(TodoList taskGroup, bool isSelected) {
     return ListTile(
       title: Text(taskGroup.title),
       selected: isSelected,
       onTap: () {
         if (isSelected) return;
         Provider.of<TasksModel>(context, listen: false)
-            .updateCurrentTaskGroup(taskGroup);
+            .setCurrentTodoList(taskGroup);
 
         Navigator.pop(context);
       },

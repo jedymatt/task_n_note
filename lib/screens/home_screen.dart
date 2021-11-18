@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
-import 'package:task_n_note/models/task_group.dart';
+import 'package:task_n_note/models/todo_list.dart';
+import 'package:task_n_note/widgets/tasks_bottom_app_bar.dart';
 import '../widgets/note_list_view.dart';
 import '../widgets/task_group_sheet.dart';
 import '../widgets/task_list_view.dart';
@@ -22,11 +23,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentTabIndex = 0;
-  List<TaskGroup> taskGroups = [
-    TaskGroup(title: 'My Tasks'),
+  List<TodoList> taskGroups = [
+    TodoList(title: 'My Tasks'),
   ];
 
-  late TaskGroup currentTaskGroup;
+  late TodoList currentTaskGroup;
 
   @override
   void initState() {
@@ -105,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: currentTabIndex == 0
-            ? buildTaskBottomAppBar()
+            ? TasksBottomAppBar()
             : BottomAppBar(
                 shape: CircularNotchedRectangle(),
                 notchMargin: 5.0,
@@ -156,58 +157,5 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {},
       ),
     ];
-  }
-
-  Widget buildTaskBottomAppBar() {
-    return Builder(builder: (context) {
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 5.0,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: showTaskGroupSheet,
-            ),
-            Spacer(),
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  builder: (context) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 15.0,
-                        ),
-                        ListTile(
-                          // leading: Icon(Icons.done_all),
-                          title: Text('Mark all as complete'),
-                          onTap: () {},
-                        ),
-                        ListTile(
-                          // leading: Icon(Icons.clear_all),
-                          title: Text('Clear all completed'),
-                          onTap: () {},
-                        ),
-                      ],
-                    );
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    });
   }
 }
