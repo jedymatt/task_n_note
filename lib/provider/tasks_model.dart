@@ -5,8 +5,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import '../models/todo_list.dart';
 import '../models/todo.dart';
+import '../models/todo_list.dart';
 
 class TasksModel extends ChangeNotifier {
   late List<TodoList> _todoLists;

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:task_n_note/screens/home_screen.dart';
+
+// Project imports:
+import '../screens/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);

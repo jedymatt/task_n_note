@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 // Project imports:
 import '../provider/tasks_model.dart';
-import './screens/home_screen.dart';
+import './screens/login_screen.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -26,7 +26,8 @@ class App extends StatelessWidget {
         theme: ThemeData(
           textTheme: GoogleFonts.nunitoTextTheme(),
         ),
-        home: HomeScreen(),
+        home: LoginScreen(),
+        // home: HomeScreen(),
       ),
     );
   }
