@@ -45,11 +45,11 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.jedymatt.task_n_note"
-        minSdkVersion 19
+        minSdkVersion 21 // 19
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        multiDexEnabled true // Added to fix build when firebase pub dependencies is added
+        // multiDexEnabled true // Added to fix build when firebase pub dependencies is added
     }
 
     buildTypes {
