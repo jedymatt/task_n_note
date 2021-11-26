@@ -52,8 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  foregroundColor: Colors.indigoAccent,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   automaticallyImplyLeading: false,
                   title: Text(
                     'Task n\' Note',
@@ -76,9 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         currentTabIndex = value;
                       });
                     },
-                    labelColor: Colors.indigoAccent,
-                    indicatorColor: Colors.indigoAccent,
-                    indicatorSize: TabBarIndicatorSize.label,
                     tabs: [
                       Tab(
                         text: 'Tasks',

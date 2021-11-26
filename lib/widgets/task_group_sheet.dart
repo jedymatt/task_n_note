@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import '../models/todo_list.dart';
 import '../provider/tasks_model.dart';
-import '../screens/add_task_group_screen.dart';
+import '../screens/add_task_list_screen.dart';
 
 class TaskGroupSheet extends StatefulWidget {
   const TaskGroupSheet({
@@ -60,7 +60,7 @@ class _TaskGroupSheetState extends State<TaskGroupSheet> {
   Widget _buildAddTaskGroup() {
     return ListTile(
       title: Text(
-        'Create task group',
+        'Create task list',
         style: TextStyle(
           fontWeight: FontWeight.w600,
         ),
@@ -69,7 +69,7 @@ class _TaskGroupSheetState extends State<TaskGroupSheet> {
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return AddTaskGroupScreen();
+            return AddTaskListScreen();
           },
         ));
       },

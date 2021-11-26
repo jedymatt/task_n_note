@@ -10,18 +10,15 @@ import 'package:provider/provider.dart';
 import '../models/todo_list.dart';
 import '../provider/tasks_model.dart';
 
-class AddTaskGroupScreen extends StatelessWidget {
+class AddTaskListScreen extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
 
-  AddTaskGroupScreen({Key? key}) : super(key: key);
+  AddTaskListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: Colors.indigoAccent,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.close),

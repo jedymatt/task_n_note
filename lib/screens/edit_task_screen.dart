@@ -24,9 +24,6 @@ class EditTaskScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        foregroundColor: Colors.indigoAccent,
-        elevation: 0.0,
         // title: Text('Add Task'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -42,7 +39,7 @@ class EditTaskScreen extends StatelessWidget {
 
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.done)),
+              icon: Icon(Icons.save)),
         ],
       ),
       body: SafeArea(

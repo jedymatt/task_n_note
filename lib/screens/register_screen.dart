@@ -1,14 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:task_n_note/screens/register_screen.dart';
+import 'package:task_n_note/screens/login_screen.dart';
 
-// Project imports:
-import '../screens/home_screen.dart';
+import 'home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +45,17 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(
                   height: 8.0,
                 ),
+                TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.password),
+                    border: OutlineInputBorder(),
+                    label: Text('Confirm password'),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -55,13 +64,13 @@ class LoginScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Register'),
+                        child: Text('Have account? Login here'),
                       ),
                     ),
                     SizedBox(
@@ -78,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Login'),
+                        child: Text('Register'),
                       ),
                     ),
                   ],

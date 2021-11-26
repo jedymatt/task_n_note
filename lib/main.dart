@@ -25,6 +25,23 @@ class App extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           textTheme: GoogleFonts.nunitoTextTheme(),
+          primarySwatch: Colors.indigo,
+          appBarTheme: AppBarTheme.of(context).copyWith(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            foregroundColor: Theme.of(context).primaryColorDark,
+            elevation: 0.0,
+          ),
+          tabBarTheme: TabBarTheme.of(context).copyWith(
+            labelColor: Theme.of(context).primaryColorDark,
+            unselectedLabelColor: Theme.of(context).primaryColor,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                color: Theme.of(context).primaryColorDark,
+                width: 2.0,
+              ),
+            ),
+          ),
         ),
         home: LoginScreen(),
         // home: HomeScreen(),
