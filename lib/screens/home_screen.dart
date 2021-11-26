@@ -1,101 +1,156 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:task_n_note/widgets/note_list.dart';
-import 'package:task_n_note/widgets/task_drawer.dart';
-import '../widgets/task_list.dart';
+
+// Package imports:
+import 'package:google_fonts/google_fonts.dart';
+
+// Project imports:
+import 'package:task_n_note/models/todo_list.dart';
+import 'package:task_n_note/widgets/tasks_bottom_app_bar.dart';
+import '../widgets/note_list_view.dart';
+import '../widgets/task_group_sheet.dart';
+import '../widgets/task_list_view.dart';
+import 'add_task_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentListIndex = 0;
-  final List<Widget> _lists = [
-    TaskList(),
-    NoteList(),
+  int currentTabIndex = 0;
+  List<TodoList> taskGroups = [
+    TodoList(title: 'My Tasks'),
   ];
+
+  late TodoList currentTaskGroup;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentTaskGroup = taskGroups.first;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: (_currentListIndex == 0)
-          ? AppBar(
-              // title: Text('My Tasks'),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.done_all),
-                              title: Text('Mark all as complete'),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.clear_all),
-                              title: Text('Clear all completed'),
-                              onTap: () {},
-                            ),
-                          ],
-                        );
-                      },
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(15.0),
-                          topRight: Radius.circular(15.0),
-                        ),
+    Row currentBottomAppBarItems = Row(
+      mainAxisSize: MainAxisSize.max,
+      children: _getCurrentBottomAppBarItems(),
+    );
+    return DefaultTabController(
+      length: 2,
+      initialIndex: currentTabIndex,
+      child: Scaffold(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  title: Text(
+                    'Task n\' Note',
+                    style: GoogleFonts.varelaRound(),
+                  ),
+                  pinned: true,
+                  floating: true,
+                  snap: true,
+                  actions: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.account_circle),
+                    ),
+                  ],
+                  bottom: TabBar(
+                    onTap: (value) {
+                      if (currentTabIndex == value) return;
+
+                      setState(() {
+                        currentTabIndex = value;
+                      });
+                    },
+                    tabs: [
+                      Tab(
+                        text: 'Tasks',
                       ),
-                    );
-                  },
-                  icon: Icon(
-                    Icons.more_vert,
+                      Tab(
+                        text: 'Notes',
+                      ),
+                    ],
                   ),
                 ),
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                TaskListView(),
+                NoteListView(),
               ],
-            )
-          : null,
-      drawer: (_currentListIndex == 0)
-          ? Drawer(
-              child: SafeArea(
-                child: TaskDrawer(),
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _moveToAddTaskScreen,
+          child: Icon(Icons.add),
+          backgroundColor: Colors.indigoAccent,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: currentTabIndex == 0
+            ? TasksBottomAppBar()
+            : BottomAppBar(
+                shape: CircularNotchedRectangle(),
+                notchMargin: 5.0,
+                child: currentBottomAppBarItems,
               ),
-            )
-          : null,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentListIndex,
-        onTap: (value) {
-          setState(() {
-            _currentListIndex = value;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: 'Tasks',
-            icon: Icon(Icons.task_alt_rounded),
-          ),
-          BottomNavigationBarItem(
-            label: 'Notes',
-            icon: Icon(Icons.notes),
-          ),
-        ],
-      ),
-      body: _lists[_currentListIndex],
     );
+  }
+
+  void showTaskGroupSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return TaskGroupSheet();
+      },
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10.0),
+        ),
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  void _moveToAddTaskScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTaskScreen(),
+      ),
+    );
+  }
+
+  List<Widget> _getCurrentBottomAppBarItems() {
+    // notes
+    return [
+      IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () {},
+      ),
+      Spacer(),
+      IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.search),
+      ),
+      IconButton(
+        icon: Icon(Icons.more_vert),
+        onPressed: () {},
+      ),
+    ];
   }
 }
