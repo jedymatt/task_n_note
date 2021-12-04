@@ -2,7 +2,6 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:task_n_note/screens/note_edit_screen.dart';
 
 class NoteListView extends StatelessWidget {
   const NoteListView({Key? key}) : super(key: key);
@@ -37,38 +36,30 @@ class NoteListView extends StatelessWidget {
   }
 
   Widget _buildNoteCard() {
-    return Builder(builder: (context) {
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          border: Border.all(width: 1.0, color: Colors.black12),
-        ),
-        margin: EdgeInsets.all(8.0),
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NoteEditScreen(),
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
+        side: BorderSide(width: 1.0, color: Colors.black12),
+      ),
+      elevation: 0.0,
+      margin: EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'title',
+                style: TextStyle(fontWeight: FontWeight.w600),
               ),
-            );
-          },
-          borderRadius: BorderRadius.circular(14.0),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'title',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-                Text('description'),
-              ],
-            ),
+              Text('description'),
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
