@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 // Project imports:
 import '../models/todo.dart';
@@ -29,8 +30,10 @@ class AddTaskScreen extends StatelessWidget {
           IconButton(
               onPressed: () {
                 Todo todo = Todo(
+                  id: Uuid().v4(),
                   title: titleController.text,
                   description: descriptionController.text,
+                  isComplete: false,
                 );
 
                 Provider.of<TasksModel>(context, listen: false).addTodo(todo);

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 // Project imports:
 import '../models/todo_list.dart';
@@ -27,9 +28,21 @@ class AddTaskListScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              if (titleController.text.trim() == "") {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Cannot create an empty name'),
+                  ),
+                );
+                return;
+              }
+
               TodoList taskGroup = TodoList(
-                title: titleController.text,
+                id: const Uuid().v4(),
+                title: titleController.text.trim(),
+                todos: [],
               );
+
               Provider.of<TasksModel>(context, listen: false)
                   .addTodoList(taskGroup);
 

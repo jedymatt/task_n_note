@@ -3,18 +3,24 @@ import 'dart:collection';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 // Project imports:
 import '../models/todo.dart';
 import '../models/todo_list.dart';
 
 class TasksModel extends ChangeNotifier {
+  final uuid = const Uuid();
   late List<TodoList> _todoLists;
   late TodoList _currentTodoList;
 
   TasksModel() {
     _todoLists = [
-      TodoList(title: 'My Tasks'),
+      TodoList(
+        id: uuid.v4(),
+        title: 'My Tasks',
+        todos: [],
+      ),
     ];
 
     _currentTodoList = _todoLists.first;
@@ -59,9 +65,5 @@ class TasksModel extends ChangeNotifier {
   void addTodo(Todo todo) {
     _currentTodoList.todos.add(todo);
     notifyListeners();
-  }
-
-  void updateTodo(Todo todo) {
-    int index = _currentTodoList.todos.indexOf(todo);
   }
 }
