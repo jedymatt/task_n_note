@@ -2,17 +2,17 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:google_fonts/google_fonts.dart';
 
 // Project imports:
-import 'package:task_n_note/models/todo_list.dart';
-import 'package:task_n_note/widgets/tasks_bottom_app_bar.dart';
+import '../models/todo_list.dart';
+import '../widgets/add_note_fab.dart';
+import '../widgets/add_task_fab.dart';
 import '../widgets/note_list_view.dart';
 import '../widgets/task_group_sheet.dart';
 import '../widgets/task_list_view.dart';
-import 'add_task_screen.dart';
+import '../widgets/tasks_bottom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,30 +21,62 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int currentTabIndex = 0;
-  List<TodoList> taskGroups = [
-    TodoList(title: 'My Tasks'),
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  // int currentTabIndex = 0;
+  late TabController _tabController;
+  late TodoList currentTaskGroup;
+
+  /// Floating action buttons
+  final fabs = [
+    AddTaskFab(),
+    AddNoteFab(),
   ];
 
-  late TodoList currentTaskGroup;
+  final bottomNavBars = [
+    TasksBottomAppBar(),
+    BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 5.0,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {},
+          ),
+          Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          ),
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        ],
+        // children: _getCurrentBottomAppBarItems(),
+      ),
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
 
-    currentTaskGroup = taskGroups.first;
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(listenCurrentTabIndex);
+  }
+
+  void listenCurrentTabIndex() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    Row currentBottomAppBarItems = Row(
-      mainAxisSize: MainAxisSize.max,
-      children: _getCurrentBottomAppBarItems(),
-    );
     return DefaultTabController(
       length: 2,
-      initialIndex: currentTabIndex,
+      initialIndex: _tabController.index,
       child: Scaffold(
         body: SafeArea(
           child: NestedScrollView(
@@ -67,13 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                   bottom: TabBar(
-                    onTap: (value) {
-                      if (currentTabIndex == value) return;
-
-                      setState(() {
-                        currentTabIndex = value;
-                      });
-                    },
+                    controller: _tabController,
                     tabs: [
                       Tab(
                         text: 'Tasks',
@@ -87,6 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ];
             },
             body: TabBarView(
+              controller: _tabController,
               children: <Widget>[
                 TaskListView(),
                 NoteListView(),
@@ -94,19 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _moveToAddTaskScreen,
-          child: Icon(Icons.add),
-          backgroundColor: Colors.indigoAccent,
-        ),
+        floatingActionButton: fabs[_tabController.index],
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: currentTabIndex == 0
-            ? TasksBottomAppBar()
-            : BottomAppBar(
-                shape: CircularNotchedRectangle(),
-                notchMargin: 5.0,
-                child: currentBottomAppBarItems,
-              ),
+        bottomNavigationBar: bottomNavBars[_tabController.index],
       ),
     );
   }
@@ -124,33 +141,5 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       isScrollControlled: true,
     );
-  }
-
-  void _moveToAddTaskScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddTaskScreen(),
-      ),
-    );
-  }
-
-  List<Widget> _getCurrentBottomAppBarItems() {
-    // notes
-    return [
-      IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: () {},
-      ),
-      Spacer(),
-      IconButton(
-        onPressed: () {},
-        icon: Icon(Icons.search),
-      ),
-      IconButton(
-        icon: Icon(Icons.more_vert),
-        onPressed: () {},
-      ),
-    ];
   }
 }
