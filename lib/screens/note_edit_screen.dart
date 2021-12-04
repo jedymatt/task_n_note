@@ -2,9 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 
-class NoteEditScreen extends StatelessWidget {
+class NoteEditScreen extends StatefulWidget {
   const NoteEditScreen({Key? key}) : super(key: key);
+
+  @override
+  State<NoteEditScreen> createState() => _NoteEditScreenState();
+}
+
+class _NoteEditScreenState extends State<NoteEditScreen> {
+  final QuillController _quillController = QuillController.basic();
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +34,27 @@ class NoteEditScreen extends StatelessWidget {
             TextFormField(
               initialValue: 'Note title',
             ),
-            TextFormField(
-              initialValue: 'Note Description',
-              maxLines: 4,
-            )
+            // TextFormField(
+            //   initialValue: 'Note Description',
+            //   maxLines: 4,
+            // )
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuillEditor.basic(
+                  controller: _quillController,
+                  readOnly: false, // true for view only mode
+                ),
+              ),
+            ),
+            QuillToolbar.basic(
+              controller: _quillController,
+              showImageButton: false,
+              showVideoButton: false,
+              multiRowsDisplay: false,
+              showCameraButton: false,
+              showCodeBlock: false,
+            ),
           ],
         ),
       ),
