@@ -5,17 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "task_n_note",
+            "name": "task_n_note (debug mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug",
-            // "showMemoryUsage": true,
+            "program": "lib/main.dart",
+            "flutterMode": "debug"
         },
         {
             "name": "task_n_note (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
-        }
+        },
+        {
+            "name": "task_n_note (release mode)",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+        },
     ]
 }
