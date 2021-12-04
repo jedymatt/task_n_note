@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_n_note/screens/add_task_screen.dart';
 
-import 'components/animated_icon_fab.dart';
-
 class AddTaskFab extends StatefulWidget {
   const AddTaskFab({Key? key}) : super(key: key);
 
@@ -13,9 +11,7 @@ class AddTaskFab extends StatefulWidget {
 class _AddTaskFabState extends State<AddTaskFab> {
   @override
   Widget build(BuildContext context) {
-    return AnimatedIconFab(
-      // key: widget.key,
-      icon: const Icon(Icons.add),
+    return FloatingActionButton(
       onPressed: () {
         Navigator.push(
           context,
@@ -24,6 +20,9 @@ class _AddTaskFabState extends State<AddTaskFab> {
           ),
         );
       },
+      child: const Icon(
+        Icons.add,
+      ),
     );
   }
 }
