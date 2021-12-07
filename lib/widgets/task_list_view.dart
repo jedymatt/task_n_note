@@ -47,15 +47,11 @@ class TaskListView extends StatelessWidget {
                       .map((task) => _buildTaskItem(task))
                       .toList()
                   : [
-                      Expanded(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(25.0),
-                            child: SvgPicture.asset(
-                              'assets/svgs/undraw_no_data_re_kwbl.svg',
-                              semanticsLabel: 'Empty',
-                            ),
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.all(25.0),
+                        child: SvgPicture.asset(
+                          'assets/svgs/undraw_no_data_re_kwbl.svg',
+                          semanticsLabel: 'Empty',
                         ),
                       )
                     ],

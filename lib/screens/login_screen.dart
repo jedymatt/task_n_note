@@ -2,86 +2,110 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:task_n_note/main.dart';
 import 'package:task_n_note/screens/register_screen.dart';
+import 'package:task_n_note/services/auth_service.dart';
 
-// Project imports:
 import '../screens/home_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final emailField = TextEditingController();
+  final passwordField = TextEditingController();
+  bool isObscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(15.0),
           child: AutofillGroup(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: FlutterLogo(
-                    size: 74.0,
-                  ),
-                ),
                 TextFormField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
+                  keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [
+                    AutofillHints.username,
+                    AutofillHints.email,
+                  ],
+                  controller: emailField,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     label: Text('Email'),
+                    prefixIcon: Icon(Icons.email_outlined),
                   ),
+                  textInputAction: TextInputAction.next,
                 ),
-                SizedBox(
-                  height: 8.0,
-                ),
+                const SizedBox(height: 10.0),
                 TextFormField(
-                  obscureText: true,
+                  obscureText: isObscurePassword,
+                  autofillHints: const [AutofillHints.password],
+                  controller: passwordField,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.password),
-                    border: OutlineInputBorder(),
-                    label: Text('Password'),
+                    border: const OutlineInputBorder(),
+                    label: const Text('Password'),
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isObscurePassword = !isObscurePassword;
+                        });
+                      },
+                      icon: Icon(
+                        isObscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 8.0,
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    final String message = await AuthService().signIn(
+                      email: emailField.text,
+                      password: passwordField.text,
+                    );
+
+                    if (message != 'success') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(message),
+                        ),
+                      );
+
+                      return;
+                    }
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      ),
+                      (route) => route.isFirst,
+                    );
+                  },
+                  child: const Text('Login'),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Register'),
-                      ),
+                TextButton(
+                  onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterScreen(),
                     ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Login'),
-                      ),
-                    ),
-                  ],
+                  ),
+                  child: const Text('New user? Register here'),
                 ),
               ],
             ),

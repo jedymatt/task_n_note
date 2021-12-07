@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_n_note/screens/login_screen.dart';
 import 'package:task_n_note/screens/setting_screen.dart';
+import 'package:task_n_note/services/auth_service.dart';
 
 class AccountDialog extends StatelessWidget {
   const AccountDialog({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class AccountDialog extends StatelessWidget {
         ListTile(
           // tileColor: Colors.green,
           onTap: () {
+            AuthService().signOut();
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
