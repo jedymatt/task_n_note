@@ -9,7 +9,8 @@
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
-            "flutterMode": "debug"
+            "flutterMode": "debug",
+            "showMemoryUsage": true
         },
         {
             "name": "task_n_note (profile mode)",

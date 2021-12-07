@@ -5,9 +5,9 @@ class Note {
 
   Note({
     required this.id,
-    required this.title,
-    required this.content,
-  }) : assert(title != '', content != '');
+    this.title = '',
+    this.content = '',
+  }) : assert(title != '' || content != '');
 
   @override
   int get hashCode => id.hashCode ^ title.hashCode ^ content.hashCode;

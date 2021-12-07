@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-// Flutter imports:
 import 'package:flutter/material.dart';
-// Package imports:
 import 'package:google_fonts/google_fonts.dart';
+import 'package:task_n_note/widgets/account_dialog.dart';
 
-// Project imports:
 import '../models/todo_list.dart';
+import '../screens/setting_screen.dart';
 import '../widgets/add_note_fab.dart';
 import '../widgets/add_task_fab.dart';
 import '../widgets/note_list_view.dart';
-import '../widgets/task_group_sheet.dart';
+import '../widgets/notes_bottom_app_bar.dart';
 import '../widgets/task_list_view.dart';
+import '../widgets/task_lists_sheet.dart';
 import '../widgets/tasks_bottom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,29 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   final bottomNavBars = [
     TasksBottomAppBar(),
-    BottomAppBar(
-      shape: CircularNotchedRectangle(),
-      notchMargin: 5.0,
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {},
-          ),
-          Spacer(),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
-        ],
-        // children: _getCurrentBottomAppBarItems(),
-      ),
-    ),
+    NotesBottomAppBar(),
   ];
 
   @override
@@ -94,8 +72,17 @@ class _HomeScreenState extends State<HomeScreen>
                   snap: true,
                   actions: [
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.account_circle),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AccountDialog();
+                          },
+                        );
+                      },
+                      icon: CircleAvatar(
+                        child: Icon(Icons.person),
+                      ),
                     ),
                   ],
                   bottom: TabBar(
@@ -132,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen>
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return TaskGroupSheet();
+        return TaskListsSheet();
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(

@@ -1,13 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-
-// Flutter imports:
 import 'package:flutter/material.dart';
-
-// Package imports:
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
-// Project imports:
+import '../core/utils.dart';
 import '../models/todo.dart';
 import '../provider/tasks_model.dart';
 
@@ -21,16 +15,25 @@ class AddTaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Task'),
+        title: const Text('Add Task'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.close),
+          icon: const Icon(Icons.close),
         ),
         actions: [
           IconButton(
               onPressed: () {
+                if (titleController.text == '') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Cannot create task without title'),
+                    ),
+                  );
+                  return;
+                }
+
                 Todo todo = Todo(
-                  id: Uuid().v4(),
+                  id: uuidV4(),
                   title: titleController.text,
                   description: descriptionController.text,
                   isComplete: false,
@@ -40,31 +43,43 @@ class AddTaskScreen extends StatelessWidget {
 
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.done)),
+              icon: const Icon(Icons.add)),
         ],
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextFormField(
-                controller: titleController,
-                autofocus: true,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(hintText: 'Task title'),
+        child: ListView(
+          children: [
+            TextFormField(
+              controller: titleController,
+              autofocus: true,
+              keyboardType: TextInputType.text,
+              decoration: const InputDecoration(
+                hintText: 'Task title',
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(15.0),
               ),
-              TextFormField(
+            ),
+            const Divider(
+              height: 0.0,
+              thickness: 1.0,
+              color: Colors.black12,
+            ),
+            SizedBox(
+              // height: MediaQuery.of(context).size.height,
+              child: TextFormField(
                 controller: descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Task description',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(15.0),
                 ),
                 textInputAction: TextInputAction.newline,
                 keyboardType: TextInputType.multiline,
-                maxLines: 4,
+                maxLines: null,
+                // expands: true,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

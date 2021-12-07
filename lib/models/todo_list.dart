@@ -11,7 +11,7 @@ class TodoList {
     required this.id,
     required this.title,
     required this.todos,
-  });
+  }) : assert(title != '');
 
   @override
   int get hashCode => id.hashCode ^ title.hashCode ^ todos.hashCode;

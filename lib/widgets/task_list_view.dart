@@ -2,6 +2,7 @@
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // Package imports:
 import 'package:provider/provider.dart';
@@ -9,7 +10,7 @@ import 'package:provider/provider.dart';
 // Project imports:
 import '../models/todo.dart';
 import '../provider/tasks_model.dart';
-import '../screens/edit_task_screen.dart';
+import '../screens/task_detail_screen.dart';
 
 class TaskListView extends StatelessWidget {
   const TaskListView({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class TaskListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TasksModel>(
-      builder: (context, tasksModel, child) {
+      builder: (context, model, child) {
         return Scrollbar(
           interactive: true,
           child: ListView(
@@ -33,7 +34,7 @@ class TaskListView extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Center(
                   child: Text(
-                    tasksModel.currentTodoList.title,
+                    model.currentTodoList.title,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -41,9 +42,23 @@ class TaskListView extends StatelessWidget {
                   ),
                 ),
               ),
-              ...tasksModel.currentTodoList.todos
-                  .map((task) => _buildTaskItem(task))
-                  .toList(),
+              ...(model.currentTodoList.todos.isNotEmpty)
+                  ? model.currentTodoList.todos
+                      .map((task) => _buildTaskItem(task))
+                      .toList()
+                  : [
+                      Expanded(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(25.0),
+                            child: SvgPicture.asset(
+                              'assets/svgs/undraw_no_data_re_kwbl.svg',
+                              semanticsLabel: 'Empty',
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
             ],
           ),
         );
@@ -51,24 +66,35 @@ class TaskListView extends StatelessWidget {
     );
   }
 
-  Widget _buildTaskItem(Todo task) {
+  Widget _buildTaskItem(Todo todo) {
     return Builder(
       builder: (context) {
         return ListTile(
           leading: IconButton(
-            icon: Icon(task.isComplete ? Icons.check : Icons.circle_outlined),
+            icon: Icon(todo.isComplete ? Icons.check : Icons.circle_outlined),
             onPressed: () {
-              task.isComplete = !task.isComplete;
+              final updatedTodo = todo.copyWith(
+                isComplete: !todo.isComplete,
+              );
 
-              Provider.of<TasksModel>(context, listen: false).syncChanges();
+              // Provider.of<TasksModel>(context, listen: false)
+              //     .updateTodo(updatedTodo);
+              context.read<TasksModel>().updateTodo(updatedTodo);
             },
           ),
-          title: Text(task.title),
+          title: Text(
+            todo.title,
+            style: todo.isComplete
+                ? TextStyle(
+                    color: Theme.of(context).disabledColor,
+                  )
+                : null,
+          ),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => EditTaskScreen(todo: task),
+                builder: (context) => TaskDetailScreen(todo: todo),
               ),
             );
           },

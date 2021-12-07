@@ -1,35 +1,34 @@
 // Dart imports:
 import 'dart:collection';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter/foundation.dart';
+import 'package:task_n_note/core/utils.dart';
 
-// Project imports:
 import '../models/todo.dart';
 import '../models/todo_list.dart';
 
 class TasksModel extends ChangeNotifier {
-  final uuid = const Uuid();
   late List<TodoList> _todoLists;
-  late TodoList _currentTodoList;
+  // late TodoList _currentTodoList;
+  late int _currentTodoListIndex;
 
   TasksModel() {
     _todoLists = [
       TodoList(
-        id: uuid.v4(),
+        id: uuidV4(),
         title: 'My Tasks',
         todos: [],
       ),
     ];
 
-    _currentTodoList = _todoLists.first;
+    _currentTodoListIndex = 0;
+    // _currentTodoList = _todoLists.first;
   }
 
   UnmodifiableListView<TodoList> get todoLists =>
       UnmodifiableListView(_todoLists);
 
-  TodoList get currentTodoList => _currentTodoList;
+  TodoList get currentTodoList => _todoLists[_currentTodoListIndex];
 
   void addTodoList(TodoList todoList) {
     _todoLists.add(todoList);
@@ -37,33 +36,82 @@ class TasksModel extends ChangeNotifier {
   }
 
   void removeTodoList(TodoList todoList) {
-    _todoLists.remove(todoList);
+    if (!isDeletableCurrentTodoList()) {
+      return;
+    }
+
+    final TodoList result =
+        _todoLists.firstWhere((item) => item.id == todoList.id);
+
+    final int indexDeleted = _todoLists.indexOf(result);
+
+    _todoLists.remove(result);
+
+    if (indexDeleted == _currentTodoListIndex) {
+      _currentTodoListIndex -= 1;
+    }
+
     notifyListeners();
   }
 
-  // void updateTaskGroupByIndex(int index, TodoList newTaskGroup) {
-  //   _todoLists[index] = newTaskGroup;
-  //   notifyListeners();
-  // }
+  void updateTodoList(TodoList todoList) {
+    final oldTodoList = _todoLists.firstWhere((item) => item.id == todoList.id);
+    final replaceIndex = _todoLists.indexOf(oldTodoList);
+    _todoLists.replaceRange(replaceIndex, replaceIndex + 1, [todoList]);
 
-  // void updateTaskGroup(TodoList oldTaskGroup, TodoList newTaskGroup) {
-  //   int index = _todoLists.indexOf(oldTaskGroup);
-  //   _todoLists[index] = newTaskGroup;
-  //   notifyListeners();
-  // }
-
-  void setCurrentTodoList(TodoList todoList) {
-    _currentTodoList = todoList;
     notifyListeners();
   }
 
-  void syncChanges() {
+  void updateCurrentTodoList(TodoList todoList) {
+    updateTodoList(todoList);
+    _currentTodoListIndex = _todoLists.indexOf(todoList);
+
     notifyListeners();
   }
 
   /// Add todo  in the current task group
   void addTodo(Todo todo) {
-    _currentTodoList.todos.add(todo);
+    _todoLists[_currentTodoListIndex].todos.add(todo);
     notifyListeners();
+  }
+
+  void updateTodo(Todo todo) {
+    final todoList = _todoLists[_currentTodoListIndex];
+    final oldTodo = todoList.todos.firstWhere((item) => item.id == todo.id);
+    final replaceIndex = todoList.todos.indexOf(oldTodo);
+    todoList.todos.replaceRange(replaceIndex, replaceIndex + 1, [todo]);
+
+    notifyListeners();
+  }
+
+  void removeTodo(Todo todo) {
+    _todoLists[_currentTodoListIndex]
+        .todos
+        .removeWhere((item) => item.id == todo.id);
+    notifyListeners();
+  }
+
+  void clearCompletedTodos() {
+    _todoLists[_currentTodoListIndex]
+        .todos
+        .removeWhere((item) => item.isComplete);
+    notifyListeners();
+  }
+
+  void toggleAllTodos() {
+    for (var item in _todoLists[_currentTodoListIndex].todos) {
+      item.isComplete = true;
+    }
+    notifyListeners();
+  }
+
+  /// Removes the current todo list
+  void remoRemoveCurrentTodoList() {
+    removeTodoList(_todoLists[_currentTodoListIndex]);
+    notifyListeners();
+  }
+
+  bool isDeletableCurrentTodoList() {
+    return _todoLists.length > 1 && _currentTodoListIndex > 0;
   }
 }

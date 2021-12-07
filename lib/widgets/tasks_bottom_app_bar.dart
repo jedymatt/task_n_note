@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
-
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_n_note/provider/tasks_model.dart';
+import 'package:task_n_note/screens/edit_task_list_screen.dart';
 
 // Project imports:
-import 'task_group_sheet.dart';
+import 'task_lists_sheet.dart';
 
 class TasksBottomAppBar extends StatelessWidget {
   const TasksBottomAppBar({Key? key}) : super(key: key);
@@ -12,20 +13,20 @@ class TasksBottomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      shape: CircularNotchedRectangle(),
+      shape: const CircularNotchedRectangle(),
       notchMargin: 5.0,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return TaskGroupSheet();
+                  return const TaskListsSheet();
                 },
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(
                     top: Radius.circular(10.0),
                   ),
@@ -34,9 +35,9 @@ class TasksBottomAppBar extends StatelessWidget {
               );
             },
           ),
-          Spacer(),
+          const Spacer(),
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -44,37 +45,62 @@ class TasksBottomAppBar extends StatelessWidget {
                   return ListView(
                     shrinkWrap: true,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 15.0,
                       ),
                       ListTile(
-                        title: Text('Mark all as complete'),
-                        onTap: () {},
+                        title: const Text('Mark all as complete'),
+                        onTap: () {
+                          context.read<TasksModel>().toggleAllTodos();
+
+                          Navigator.pop(context);
+                        },
                       ),
                       ListTile(
-                        title: Text('Clear all completed'),
-                        onTap: () {},
+                        title: const Text('Clear all completed'),
+                        onTap: () {
+                          context.read<TasksModel>().clearCompletedTodos();
+                          Navigator.pop(context);
+                        },
                       ),
-                      Divider(),
+                      const Divider(),
                       ListTile(
-                        title: Text('Rename task list'),
-                        onTap: () {},
+                        title: const Text('Rename task list'),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditTaskListScreen(),
+                            ),
+                          );
+                        },
                       ),
                       // Divider(),
                       ListTile(
+                        enabled: context.select((TasksModel model) =>
+                            model.isDeletableCurrentTodoList()),
                         // leading: Icon(Icons.clear_all),
+
                         title: Text(
                           'Delete task list',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: context.select((TasksModel model) =>
+                                    model.isDeletableCurrentTodoList())
+                                ? Colors.red
+                                : Theme.of(context).disabledColor,
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          context
+                              .read<TasksModel>()
+                              .remoRemoveCurrentTodoList();
+                          Navigator.pop(context);
+                        },
                       ),
                     ],
                   );
                 },
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),

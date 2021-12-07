@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:task_n_note/provider/notes_model.dart';
 
 import 'provider/tasks_model.dart';
 import 'screens/login_screen.dart';
@@ -20,7 +21,10 @@ class App extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => TasksModel(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NotesModel(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(

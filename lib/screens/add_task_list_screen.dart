@@ -24,11 +24,11 @@ class AddTaskListScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.close),
         ),
-        title: Text('Create task group'),
+        title: Text('Create task list'),
         actions: [
           IconButton(
             onPressed: () {
-              if (titleController.text.trim() == "") {
+              if (titleController.text.trim() == '') {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Cannot create an empty name'),
@@ -48,8 +48,8 @@ class AddTaskListScreen extends StatelessWidget {
 
               Navigator.pop(context);
             },
-            tooltip: "Save",
-            icon: Icon(Icons.check),
+            tooltip: 'Add',
+            icon: Icon(Icons.add),
           ),
         ],
       ),
