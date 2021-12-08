@@ -4,35 +4,12 @@ class UserEntity {
   String uid;
   String? displayName;
   String? photoUrl;
+
   UserEntity({
     required this.uid,
     this.displayName,
     this.photoUrl,
   });
-
-  factory UserEntity.fromJson(String source) =>
-      UserEntity.fromMap(json.decode(source));
-
-  factory UserEntity.fromMap(Map<String, dynamic> map) {
-    return UserEntity(
-      uid: map['uid'],
-      displayName: map['displayName'],
-      photoUrl: map['photoUrl'],
-    );
-  }
-
-  @override
-  int get hashCode => uid.hashCode ^ displayName.hashCode ^ photoUrl.hashCode;
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is UserEntity &&
-        other.uid == uid &&
-        other.displayName == displayName &&
-        other.photoUrl == photoUrl;
-  }
 
   UserEntity copyWith({
     String? uid,
@@ -46,8 +23,6 @@ class UserEntity {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
@@ -56,7 +31,33 @@ class UserEntity {
     };
   }
 
+  factory UserEntity.fromMap(Map<String, dynamic> map) {
+    return UserEntity(
+      uid: map['uid'],
+      displayName: map['displayName'] != null ? map['displayName'] : null,
+      photoUrl: map['photoUrl'] != null ? map['photoUrl'] : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory UserEntity.fromJson(String source) =>
+      UserEntity.fromMap(json.decode(source));
+
   @override
   String toString() =>
-      'User(uid: $uid, displayName: $displayName, photoUrl: $photoUrl)';
+      'UserEntity(uid: $uid, displayName: $displayName, photoUrl: $photoUrl)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is UserEntity &&
+        other.uid == uid &&
+        other.displayName == displayName &&
+        other.photoUrl == photoUrl;
+  }
+
+  @override
+  int get hashCode => uid.hashCode ^ displayName.hashCode ^ photoUrl.hashCode;
 }
