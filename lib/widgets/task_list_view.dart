@@ -19,6 +19,51 @@ class TaskListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TasksModel>(
       builder: (context, model, child) {
+        if (model.currentTodoList.todos.isEmpty) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: ListView(
+              semanticChildCount: 2,
+              // shrinkWrap: false,
+              children: [
+                Divider(
+                  thickness: 1.0,
+                  height: 1.0,
+                ),
+                Container(
+                  height: kToolbarHeight,
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      model.currentTodoList.title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 24.0,
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: SvgPicture.asset(
+                        'assets/images/undraw_no_data_re_kwbl.svg',
+                        semanticsLabel: 'Empty',
+                        height: 150.0,
+                      ),
+                    ),
+                    Text('Empty tasks'),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+
         return Scrollbar(
           interactive: true,
           child: ListView(
@@ -50,8 +95,9 @@ class TaskListView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(25.0),
                         child: SvgPicture.asset(
-                          'assets/svgs/undraw_no_data_re_kwbl.svg',
+                          'assets/images/undraw_no_data_re_kwbl.svg',
                           semanticsLabel: 'Empty',
+                          height: 150.0,
                         ),
                       )
                     ],
