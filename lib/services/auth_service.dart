@@ -5,6 +5,7 @@ import '../models/user_entity.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Stream<UserEntity?> get user {
     return _auth.authStateChanges().map(
@@ -55,6 +56,7 @@ class AuthService {
   Future<String> signOut() async {
     try {
       await _auth.signOut();
+      await _googleSignIn.signOut();
       return 'success';
     } on FirebaseAuthException catch (e) {
       return e.code;
@@ -65,7 +67,10 @@ class AuthService {
 
   Future<String> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser;
+
+      googleUser = await _googleSignIn.signIn();
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication? googleAuth =
