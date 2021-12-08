@@ -22,7 +22,6 @@ class TasksModel extends ChangeNotifier {
     ];
 
     _currentTodoListIndex = 0;
-    // _currentTodoList = _todoLists.first;
   }
 
   UnmodifiableListView<TodoList> get todoLists =>
