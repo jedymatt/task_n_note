@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "464191512925-p2m1ic14ihlbbkq676891b445ph67jeo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jedymatt.task_n_note",
+            "certificate_hash": "b3513afdfab08b1184743edaca24cffe698ba975"
+          }
+        },
+        {
           "client_id": "464191512925-44uhct7s0h7to72q4bsaai72lbr1uupm.apps.googleusercontent.com",
           "client_type": 3
         }
