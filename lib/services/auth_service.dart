@@ -30,7 +30,7 @@ class AuthService {
       );
       return 'success';
     } on FirebaseAuthException catch (e) {
-      return e.code;
+      return e.message ?? e.code;
     } catch (e) {
       rethrow;
     }
@@ -47,7 +47,7 @@ class AuthService {
       );
       return 'success';
     } on FirebaseAuthException catch (e) {
-      return e.code;
+      return e.message ?? e.code;
     } catch (e) {
       rethrow;
     }
@@ -59,7 +59,7 @@ class AuthService {
       await _googleSignIn.signOut();
       return 'success';
     } on FirebaseAuthException catch (e) {
-      return e.code;
+      return e.message ?? e.code;
     } catch (e) {
       rethrow;
     }
@@ -86,7 +86,7 @@ class AuthService {
 
       return 'success';
     } on FirebaseAuthException catch (e) {
-      return e.code;
+      return e.message ?? e.code;
     } catch (e) {
       rethrow;
     }
