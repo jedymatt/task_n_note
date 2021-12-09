@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_n_note/screens/add_note_screen.dart';
+import 'package:task_n_note/screens/note/add_note_screen.dart';
 
 class AddNoteFab extends StatefulWidget {
   const AddNoteFab({Key? key}) : super(key: key);

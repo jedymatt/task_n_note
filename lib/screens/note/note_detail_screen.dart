@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/note.dart';
-import 'package:task_n_note/provider/notes_model.dart';
+import 'package:task_n_note/models/user.dart';
+import 'package:task_n_note/services/notes_service.dart';
 
 class NoteDetailScreen extends StatefulWidget {
   final Note note;
@@ -19,14 +20,14 @@ class NoteDetailScreen extends StatefulWidget {
 }
 
 class _NoteDetailScreenState extends State<NoteDetailScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _content = TextEditingController();
   bool isEdited = false;
 
   @override
   void initState() {
-    _titleController.text = widget.note.title;
-    _contentController.text = widget.note.content;
+    _title.text = widget.note.title;
+    _content.text = widget.note.content;
 
     super.initState();
   }
@@ -35,7 +36,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Note'),
+        title: const Text('Note'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.close),
@@ -43,8 +44,9 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              context.read<NotesModel>().removeNote(widget.note);
-
+              context
+                  .read<NotesService>()
+                  .removeNote(context.read<User>(), widget.note);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.delete),
@@ -55,7 +57,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
         child: ListView(
           children: [
             TextFormField(
-              controller: _titleController,
+              controller: _title,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 hintText: 'Note title',
@@ -64,7 +66,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
               ),
               onChanged: (value) {
                 setState(() {
-                  if (_titleController.text == widget.note.title) {
+                  if (_title.text == widget.note.title) {
                     isEdited = false;
                   } else {
                     isEdited = true;
@@ -80,7 +82,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
             SizedBox(
               // height: MediaQuery.of(context).size.height,
               child: TextFormField(
-                controller: _contentController,
+                controller: _content,
                 decoration: const InputDecoration(
                   hintText: 'Note content',
                   border: InputBorder.none,
@@ -91,7 +93,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                 maxLines: null,
                 onChanged: (value) {
                   setState(() {
-                    if (_contentController.text == widget.note.content) {
+                    if (_content.text == widget.note.content) {
                       isEdited = false;
                     } else {
                       isEdited = true;
@@ -107,10 +109,12 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
           ? FloatingActionButton(
               onPressed: () {
                 final updatedNote = widget.note.copyWith(
-                  title: _titleController.text,
-                  content: _contentController.text,
+                  title: _title.text,
+                  content: _content.text,
                 );
-                context.read<NotesModel>().updateNote(updatedNote);
+                context
+                    .read<NotesService>()
+                    .updateNote(context.read<User>(), updatedNote);
 
                 final snackBar = SnackBar(
                   content: const Text('Note updated!'),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_quill/flutter_quill.dart';
-import 'package:task_n_note/core/utils.dart';
 import 'package:task_n_note/models/note.dart';
-import 'package:task_n_note/provider/notes_model.dart';
+import 'package:task_n_note/models/user.dart';
+import 'package:task_n_note/services/notes_service.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({Key? key}) : super(key: key);
@@ -39,12 +39,12 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 }
 
                 Note note = Note(
-                  id: uuidV4(),
                   title: _titleController.text,
                   content: _contentController.text,
                 );
 
-                Provider.of<NotesModel>(context, listen: false).addNote(note);
+                Provider.of<NotesService>(context, listen: false)
+                    .addNote(context.read<User>(), note);
 
                 Navigator.pop(context);
               },
