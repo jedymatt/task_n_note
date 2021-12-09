@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/user_entity.dart';
+import '../models/user.dart' as usr;
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Stream<UserEntity?> get user {
+  Stream<usr.User?> get user {
     return _auth.authStateChanges().map(
           (user) => (user != null)
-              ? UserEntity(
+              ? usr.User(
                   uid: user.uid,
                   displayName: user.displayName,
                   photoUrl: user.photoURL,
