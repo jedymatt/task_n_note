@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/note.dart';
 import 'package:task_n_note/models/user.dart';
@@ -23,14 +22,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   final TextEditingController _title = TextEditingController();
   final TextEditingController _content = TextEditingController();
   bool isEdited = false;
-
-  @override
-  void initState() {
-    _title.text = widget.note.title;
-    _content.text = widget.note.content;
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,5 +123,13 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
             )
           : null,
     );
+  }
+
+  @override
+  void initState() {
+    _title.text = widget.note.title;
+    _content.text = widget.note.content;
+
+    super.initState();
   }
 }
