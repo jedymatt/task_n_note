@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/user.dart' as usr;
@@ -55,8 +56,11 @@ class AuthService {
 
   Future<String> signOut() async {
     try {
-      await _auth.signOut();
-      await _googleSignIn.signOut();
+      if (_googleSignIn.currentUser != null) {
+        await _googleSignIn.signOut();
+      } else {
+        await _auth.signOut();
+      }
       return 'success';
     } on FirebaseAuthException catch (e) {
       return e.message ?? e.code;
@@ -67,10 +71,13 @@ class AuthService {
 
   Future<String> signInWithGoogle() async {
     try {
-      // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      final GoogleSignInAccount? googleUser;
+      if (kIsWeb) {
+        GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        await _auth.signInWithPopup(googleProvider);
+        return 'success';
+      }
 
-      googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       // Obtain the auth details from the request
       final GoogleSignInAuthentication? googleAuth =
@@ -82,7 +89,7 @@ class AuthService {
         idToken: googleAuth?.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
 
       return 'success';
     } on FirebaseAuthException catch (e) {
