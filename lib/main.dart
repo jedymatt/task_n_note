@@ -33,10 +33,6 @@ void main() async {
         Provider(
           create: (context) => TodoListsService(),
         ),
-        StreamProvider.value(
-          value: AuthService().user,
-          initialData: null,
-        ),
       ],
       child: const App(),
     ),
