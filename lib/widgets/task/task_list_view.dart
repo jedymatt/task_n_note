@@ -8,9 +8,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
-import '../models/todo.dart';
-import '../provider/tasks_model.dart';
-import '../screens/task_detail_screen.dart';
+import '../../models/todo.dart';
+import '../../provider/tasks_model.dart';
+import '../../screens/task_detail_screen.dart';
 
 class TaskListView extends StatelessWidget {
   const TaskListView({Key? key}) : super(key: key);
