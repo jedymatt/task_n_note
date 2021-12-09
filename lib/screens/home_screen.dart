@@ -1,16 +1,13 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_n_note/widgets/account_dialog.dart';
 
 import '../models/todo_list.dart';
-import '../screens/setting_screen.dart';
-import '../widgets/add_note_fab.dart';
+import '../widgets/note/add_note_fab.dart';
 import '../widgets/add_task_fab.dart';
-import '../widgets/note_list_view.dart';
-import '../widgets/notes_bottom_app_bar.dart';
-import '../widgets/task_list_view.dart';
+import '../widgets/note/note_list_view.dart';
+import '../widgets/note/notes_bottom_app_bar.dart';
+import '../widgets/task/task_list_view.dart';
 import '../widgets/task_lists_sheet.dart';
 import '../widgets/tasks_bottom_app_bar.dart';
 
@@ -29,13 +26,13 @@ class _HomeScreenState extends State<HomeScreen>
 
   /// Floating action buttons
   final fabs = [
-    AddTaskFab(),
-    AddNoteFab(),
+    const AddTaskFab(),
+    const AddNoteFab(),
   ];
 
   final bottomNavBars = [
-    TasksBottomAppBar(),
-    NotesBottomAppBar(),
+    const TasksBottomAppBar(),
+    const NotesBottomAppBar(),
   ];
 
   @override
@@ -76,18 +73,18 @@ class _HomeScreenState extends State<HomeScreen>
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return AccountDialog();
+                            return const AccountDialog();
                           },
                         );
                       },
-                      icon: CircleAvatar(
+                      icon: const CircleAvatar(
                         child: Icon(Icons.person),
                       ),
                     ),
                   ],
                   bottom: TabBar(
                     controller: _tabController,
-                    tabs: [
+                    tabs: const [
                       Tab(
                         text: 'Tasks',
                       ),
@@ -101,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
             },
             body: TabBarView(
               controller: _tabController,
-              children: <Widget>[
+              children: const <Widget>[
                 TaskListView(),
                 NoteListView(),
               ],
@@ -119,9 +116,9 @@ class _HomeScreenState extends State<HomeScreen>
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return TaskListsSheet();
+        return const TaskListsSheet();
       },
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(10.0),
         ),
