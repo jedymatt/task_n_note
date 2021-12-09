@@ -26,5 +26,6 @@ class NotesModel extends ChangeNotifier {
 
   void removeNote(Note note) {
     _notes.removeWhere((item) => item.id == note.id);
+    notifyListeners();
   }
 }
