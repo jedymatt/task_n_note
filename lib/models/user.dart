@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-class UserEntity {
+class User {
   String uid;
   String? displayName;
   String? photoUrl;
 
-  UserEntity({
+  User({
     required this.uid,
     this.displayName,
     this.photoUrl,
   });
 
-  UserEntity copyWith({
+  User copyWith({
     String? uid,
     String? displayName,
     String? photoUrl,
   }) {
-    return UserEntity(
+    return User(
       uid: uid ?? this.uid,
       displayName: displayName ?? this.displayName,
       photoUrl: photoUrl ?? this.photoUrl,
@@ -31,18 +31,18 @@ class UserEntity {
     };
   }
 
-  factory UserEntity.fromMap(Map<String, dynamic> map) {
-    return UserEntity(
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
       uid: map['uid'],
-      displayName: map['displayName'] != null ? map['displayName'] : null,
-      photoUrl: map['photoUrl'] != null ? map['photoUrl'] : null,
+      displayName: map['displayName'],
+      photoUrl: map['photoUrl'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UserEntity.fromJson(String source) =>
-      UserEntity.fromMap(json.decode(source));
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source));
 
   @override
   String toString() =>
@@ -52,7 +52,7 @@ class UserEntity {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is UserEntity &&
+    return other is User &&
         other.uid == uid &&
         other.displayName == displayName &&
         other.photoUrl == photoUrl;

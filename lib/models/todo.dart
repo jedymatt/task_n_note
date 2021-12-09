@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 class Todo {
-  String id;
+  String? id;
   String title;
   String description;
   bool isComplete;
 
   Todo({
-    required this.id,
+    this.id,
     required this.title,
     required this.description,
     required this.isComplete,

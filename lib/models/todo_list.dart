@@ -6,11 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'todo.dart';
 
 class TodoList {
-  String id;
+  String? id;
   String title;
   List<Todo> todos;
+
   TodoList({
-    required this.id,
+    this.id,
     required this.title,
     required this.todos,
   });
