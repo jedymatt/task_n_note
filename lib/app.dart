@@ -29,7 +29,7 @@ class _AppState extends State<App> {
       //   },
       // ),
       home: StreamBuilder<User?>(
-        stream: context.read<AuthService>().user,
+        stream: AuthService().user,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return const Scaffold(
