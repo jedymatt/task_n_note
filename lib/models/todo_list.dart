@@ -1,30 +1,21 @@
-// Project imports:
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-
-import 'todo.dart';
 
 class TodoList {
   String? id;
   String title;
-  List<Todo> todos;
 
   TodoList({
     this.id,
     required this.title,
-    required this.todos,
   });
 
   TodoList copyWith({
     String? id,
     String? title,
-    List<Todo>? todos,
   }) {
     return TodoList(
       id: id ?? this.id,
       title: title ?? this.title,
-      todos: todos ?? this.todos,
     );
   }
 
@@ -32,15 +23,13 @@ class TodoList {
     return {
       'id': id,
       'title': title,
-      'todos': todos.map((x) => x.toMap()).toList(),
     };
   }
 
   factory TodoList.fromMap(Map<String, dynamic> map) {
     return TodoList(
       id: map['id'],
-      title: map['title'],
-      todos: List<Todo>.from(map['todos']?.map((x) => Todo.fromMap(x))),
+      title: map['title'] ?? '',
     );
   }
 
@@ -50,18 +39,15 @@ class TodoList {
       TodoList.fromMap(json.decode(source));
 
   @override
-  String toString() => 'TodoList(id: $id, title: $title, todos: $todos)';
+  String toString() => 'TodoList(id: $id, title: $title)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is TodoList &&
-        other.id == id &&
-        other.title == title &&
-        listEquals(other.todos, todos);
+    return other is TodoList && other.id == id && other.title == title;
   }
 
   @override
-  int get hashCode => id.hashCode ^ title.hashCode ^ todos.hashCode;
+  int get hashCode => id.hashCode ^ title.hashCode;
 }
