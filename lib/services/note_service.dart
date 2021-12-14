@@ -1,13 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:task_n_note/models/note.dart';
 import 'package:task_n_note/models/user.dart';
 import 'package:task_n_note/services/database_path.dart';
 
-class NotesService {
+class NoteService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late CollectionReference<Map<String, dynamic>> _ref;
+  final User user;
 
-  Stream<List<Note>> notes(User user) {
+  NoteService({
+    required this.user,
+  });
+
+  Stream<List<Note>> get notes {
     _ref = _db.collection(DatabasePath.notes(user.uid));
 
     return _ref.snapshots().map((query) {
@@ -20,7 +26,7 @@ class NotesService {
     });
   }
 
-  Future<void> addNote(User user, Note note) async {
+  Future<void> addNote(Note note) async {
     _ref = _db.collection(DatabasePath.notes(user.uid));
 
     final doc = _ref.doc();
@@ -28,14 +34,14 @@ class NotesService {
     doc.set(fNote.toMap());
   }
 
-  Future<void> updateNote(User user, Note note) async {
+  Future<void> updateNote(Note note) async {
     _db
         .collection(DatabasePath.notes(user.uid))
         .doc(note.id)
         .update(note.toMap());
   }
 
-  Future<void> removeNote(User user, Note note) async {
+  Future<void> removeNote(Note note) async {
     _db.collection(DatabasePath.notes(user.uid)).doc(note.id).delete();
   }
 }
