@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_quill/flutter_quill.dart';
-import 'package:task_n_note/models/note.dart';
-import 'package:task_n_note/models/user.dart';
-import 'package:task_n_note/services/notes_service.dart';
+import 'package:task_n_note/models/models.dart';
+import 'package:task_n_note/services/note_service.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({Key? key}) : super(key: key);
@@ -13,9 +11,9 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
-  // final QuillController _contentController = QuillController.basic();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _content = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +26,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                if (_titleController.text == '' &&
-                    _contentController.text == '') {
+                if (_title.text == '' && _content.text == '') {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Cannot create an empty note'),
@@ -39,12 +36,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 }
 
                 Note note = Note(
-                  title: _titleController.text,
-                  content: _contentController.text,
+                  title: _title.text,
+                  content: _content.text,
                 );
 
-                Provider.of<NotesService>(context, listen: false)
-                    .addNote(context.read<User>(), note);
+                NoteService(user: context.read<User>()).addNote(note);
 
                 Navigator.pop(context);
               },
@@ -55,7 +51,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         child: ListView(
           children: [
             TextFormField(
-              controller: _titleController,
+              controller: _title,
               autofocus: true,
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
@@ -72,7 +68,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             SizedBox(
               // height: MediaQuery.of(context).size.height,
               child: TextFormField(
-                controller: _contentController,
+                controller: _content,
                 decoration: const InputDecoration(
                   hintText: 'Note content',
                   border: InputBorder.none,
