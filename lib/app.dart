@@ -1,11 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:task_n_note/services/auth_service.dart';
 
 import 'models/user.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
-import 'services/auth_service.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -22,12 +23,6 @@ class _AppState extends State<App> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: _buildThemeData(context),
-      // home: Builder(
-      //   builder: (context) {
-      //     final user = context.read<User?>();
-      //     return user != null ? const HomeScreen() : const LoginScreen();
-      //   },
-      // ),
       home: StreamBuilder<User?>(
         stream: AuthService().user,
         builder: (context, snapshot) {
@@ -39,12 +34,29 @@ class _AppState extends State<App> {
             );
           }
 
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData && snapshot.requireData != null) {
-              return const HomeScreen();
+          if (snapshot.connectionState != ConnectionState.active) {
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          if (snapshot.hasData) {
+            final user = snapshot.requireData;
+            if (user != null) {
+              return Provider<User>.value(
+                builder: (context, child) {
+                  return const HomeScreen();
+                },
+                value: user,
+              );
+            } else {
+              return const LoginScreen();
             }
+          } else {
             return const LoginScreen();
           }
+
           // Otherwise, show something whilst waiting for initialization to complete
           return const Scaffold(
             body: Center(
@@ -53,6 +65,7 @@ class _AppState extends State<App> {
           );
         },
       ),
+      // futureBuilder: when hot restarted, returns to loginPage even when user is logged in
       // home: FutureBuilder(
       //   future: _initialization,
       //   builder: (context, snapshot) {
@@ -72,7 +85,7 @@ class _AppState extends State<App> {
 
       //     // Once complete, show your application
       //     if (snapshot.connectionState == ConnectionState.done) {
-      //       final user = Provider.of<User?>(context);
+      //       final user = context.read<User?>();
       //       if (user == null) {
       //         return const LoginScreen();
       //       } else {
