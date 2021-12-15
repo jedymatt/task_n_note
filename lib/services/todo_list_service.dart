@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/todo_list.dart';
-import '../models/user.dart';
-import 'database_path.dart';
+import '../models/models.dart';
 
 class TodoListService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  late CollectionReference<Map<String, dynamic>> _ref;
+  final User user;
+  final String path;
 
-  Stream<List<TodoList>> todoLists(User user) {
-    _ref = _db.collection('users/${user.uid}/todoLists');
+  TodoListService({
+    required this.user,
+  }) : path = 'users/${user.uid}/todoLists';
 
-    return _ref.snapshots().map((query) {
+  Stream<List<TodoList>> get todoLists {
+    return _db.collection(path).snapshots().map((query) {
       final List<TodoList> _todoLists = [];
       for (final doc in query.docs) {
-        final note = TodoList.fromMap(doc.data());
+        final note = TodoList.fromJson(doc.data());
         _todoLists.add(note);
       }
 
@@ -22,35 +23,36 @@ class TodoListService {
     });
   }
 
-  Future<void> addTodoList(User user, TodoList todoList) async {
-    _ref = _db.collection(DatabasePath.todoLists(user.uid));
+  Stream<TodoList> todoList(String id) {
+    final doc = _db.collection(path).doc(id);
 
-    final doc = _ref.doc();
+    return doc.snapshots().map((event) {
+      return TodoList.fromJson(event.data()!);
+    });
+  }
+
+  Future<void> addTodoList(TodoList todoList) async {
+    final doc = _db.collection(path).doc();
+
     final fTodoList = todoList.copyWith(id: doc.id);
-    await doc.set(fTodoList.toMap());
+    await doc.set(fTodoList.toJson());
   }
 
-  Future<void> updateTodoList(User user, TodoList todoList) async {
-    await _db
-        .collection(DatabasePath.todoLists(user.uid))
-        .doc(todoList.id)
-        .update(todoList.toMap());
+  Future<void> updateTodoList(TodoList todoList) async {
+    await _db.collection(path).doc(todoList.id).update(todoList.toJson());
   }
 
-  Future<void> removeTodoList(User user, TodoList todoList) async {
+  Future<void> removeTodoList(TodoList todoList) async {
+    await _db.collection(path).doc(todoList.id).delete();
     await _db
-        .collection(DatabasePath.todoLists(user.uid))
-        .doc(todoList.id)
-        .delete();
-    await _db
-        .collection(DatabasePath.todoLists(user.uid))
+        .collection(path)
         .doc(todoList.id)
         .collection('todos')
         .get()
         .then((value) {
       for (var element in value.docs) {
         _db
-            .collection(DatabasePath.todoLists(user.uid))
+            .collection(path)
             .doc(todoList.id)
             .collection('todos')
             .doc(element.id)

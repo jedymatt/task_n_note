@@ -1,20 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/user.dart' as usr;
+import '../models/models.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Stream<usr.User?> get user {
+  Stream<User?> get user {
     return _auth.authStateChanges().map(
           (user) => (user != null)
-              ? usr.User(
+              ? User(
                   uid: user.uid,
                   displayName: user.displayName,
                   photoUrl: user.photoURL,
+                  email: user.email,
                 )
               : null,
         );

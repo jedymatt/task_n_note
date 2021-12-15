@@ -19,7 +19,7 @@ class NoteService {
     return _ref.snapshots().map((query) {
       final List<Note> _notes = [];
       for (final doc in query.docs) {
-        final note = Note.fromMap(doc.data());
+        final note = Note.fromJson(doc.data());
         _notes.add(note);
       }
       return _notes;
@@ -31,14 +31,14 @@ class NoteService {
 
     final doc = _ref.doc();
     final fNote = note.copyWith(id: doc.id);
-    doc.set(fNote.toMap());
+    doc.set(fNote.toJson());
   }
 
   Future<void> updateNote(Note note) async {
     _db
         .collection(DatabasePath.notes(user.uid))
         .doc(note.id)
-        .update(note.toMap());
+        .update(note.toJson());
   }
 
   Future<void> removeNote(Note note) async {
