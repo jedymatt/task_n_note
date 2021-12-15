@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_n_note/models/todo_list.dart';
+import 'package:task_n_note/models/user.dart';
+import 'package:task_n_note/services/todo_service.dart';
 
-import '../core/utils.dart';
 import '../models/todo.dart';
-import '../provider/tasks_model.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTodoScreen extends StatefulWidget {
+  final TodoList todoList;
+  const AddTodoScreen({Key? key, required this.todoList}) : super(key: key);
+
+  @override
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
+}
+
+class _AddTodoScreenState extends State<AddTodoScreen> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
 
-  AddTaskScreen({Key? key}) : super(key: key);
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +30,7 @@ class AddTaskScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 if (titleController.text == '') {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -33,13 +41,14 @@ class AddTaskScreen extends StatelessWidget {
                 }
 
                 Todo todo = Todo(
-                  id: uuidV4(),
                   title: titleController.text,
                   description: descriptionController.text,
                   isComplete: false,
                 );
 
-                Provider.of<TasksModel>(context, listen: false).addTodo(todo);
+                TodoService(
+                        user: context.read<User>(), todoList: widget.todoList)
+                    .addTodo(todo);
 
                 Navigator.pop(context);
               },
