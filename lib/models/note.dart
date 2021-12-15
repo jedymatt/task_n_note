@@ -1,61 +1,15 @@
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Note {
-  String? id;
-  String title;
-  String content;
+part 'note.freezed.dart';
+part 'note.g.dart';
 
-  Note({
-    this.id,
-    required this.title,
-    required this.content,
-  });
-
-  Note copyWith({
+@freezed
+class Note with _$Note {
+  const factory Note({
     String? id,
-    String? title,
-    String? content,
-  }) {
-    return Note(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      content: content ?? this.content,
-    );
-  }
+    required String title,
+    required String content,
+  }) = _Note;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'content': content,
-    };
-  }
-
-  factory Note.fromMap(Map<String, dynamic> map) {
-    return Note(
-      id: map['id'],
-      title: map['title'],
-      content: map['content'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Note.fromJson(String source) => Note.fromMap(json.decode(source));
-
-  @override
-  String toString() => 'Note(id: $id, title: $title, content: $content)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Note &&
-        other.id == id &&
-        other.title == title &&
-        other.content == content;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ title.hashCode ^ content.hashCode;
+  factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);
 }

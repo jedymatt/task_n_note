@@ -1,63 +1,16 @@
-import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User {
-  String uid;
-  String? displayName;
-  String? photoUrl;
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-  User({
-    required this.uid,
-    this.displayName,
-    this.photoUrl,
-  });
-
-  User copyWith({
-    String? uid,
+@freezed
+class User with _$User {
+  const factory User({
+    required String uid,
     String? displayName,
     String? photoUrl,
-  }) {
-    return User(
-      uid: uid ?? this.uid,
-      displayName: displayName ?? this.displayName,
-      photoUrl: photoUrl ?? this.photoUrl,
-    );
-  }
+    String? email,
+  }) = _User;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'uid': uid,
-      'displayName': displayName,
-      'photoUrl': photoUrl,
-    };
-  }
-
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(
-      uid: map['uid'],
-      displayName: map['displayName'],
-      photoUrl: map['photoUrl'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory User.fromJson(String source) =>
-      User.fromMap(json.decode(source));
-
-  @override
-  String toString() =>
-      'UserEntity(uid: $uid, displayName: $displayName, photoUrl: $photoUrl)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is User &&
-        other.uid == uid &&
-        other.displayName == displayName &&
-        other.photoUrl == photoUrl;
-  }
-
-  @override
-  int get hashCode => uid.hashCode ^ displayName.hashCode ^ photoUrl.hashCode;
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
