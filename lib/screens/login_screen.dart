@@ -1,7 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_n_note/screens/home_screen.dart';
 import 'package:task_n_note/screens/register_screen.dart';
 import 'package:task_n_note/services/auth_service.dart';
 
