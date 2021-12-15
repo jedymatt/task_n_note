@@ -1,10 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_n_note/models/note.dart';
-import 'package:task_n_note/models/user.dart';
-import 'package:task_n_note/services/notes_service.dart';
+
+import '../../models/models.dart';
+import '../../services/note_service.dart';
 
 class NoteDetailScreen extends StatefulWidget {
   final Note note;
@@ -35,9 +33,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              context
-                  .read<NotesService>()
-                  .removeNote(context.read<User>(), widget.note);
+              NoteService(user: context.read<User>()).removeNote(widget.note);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.delete),
@@ -103,9 +99,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   title: _title.text,
                   content: _content.text,
                 );
-                context
-                    .read<NotesService>()
-                    .updateNote(context.read<User>(), updatedNote);
+                NoteService(user: context.read<User>()).updateNote(updatedNote);
 
                 final snackBar = SnackBar(
                   content: const Text('Note updated!'),
