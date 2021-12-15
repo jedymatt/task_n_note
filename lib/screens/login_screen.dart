@@ -5,6 +5,8 @@ import 'package:task_n_note/screens/home_screen.dart';
 import 'package:task_n_note/screens/register_screen.dart';
 import 'package:task_n_note/services/auth_service.dart';
 
+import '../app.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -83,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(15.0),
                       ),
                       onPressed: () async {
-                        final String message = await AuthService().signIn(
+                        final message = await AuthService().signIn(
                           email: emailField.text,
                           password: passwordField.text,
                         );
@@ -100,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                            builder: (context) => const App(),
                           ),
                         );
                       },
@@ -124,13 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           return;
                         }
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ),
-                        );
                       },
                     ),
                     const SizedBox(height: 10.0),
@@ -138,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(15.0),
                       ),
-                      onPressed: () => Navigator.pushReplacement(
+                      onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const RegisterScreen(),

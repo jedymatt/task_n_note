@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_n_note/screens/home_screen.dart';
 
 import '../../services/auth_service.dart';
-import '../screens/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -94,13 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           );
                           return;
                         }
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
-                          ),
-                        );
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       child: const Text('Register'),
                     ),
@@ -110,12 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         padding: const EdgeInsets.all(15.0),
                       ),
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
+                        Navigator.pop(context);
                       },
                       child: const Text('Already have an account? Login here'),
                     ),
