@@ -1,12 +1,9 @@
-// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_n_note/provider/tasks_model.dart';
-import 'package:task_n_note/screens/edit_task_list_screen.dart';
+import 'package:task_n_note/models/models.dart';
+import 'package:task_n_note/screens/edit_todo_list_screen.dart';
 
-// Project imports:
-import 'task_lists_sheet.dart';
-
+@Deprecated('No Longer used')
 class TasksBottomAppBar extends StatelessWidget {
   const TasksBottomAppBar({Key? key}) : super(key: key);
 
@@ -21,18 +18,18 @@ class TasksBottomAppBar extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return const TaskListsSheet();
-                },
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(10.0),
-                  ),
-                ),
-                isScrollControlled: true,
-              );
+              // showModalBottomSheet(
+              //   context: context,
+              //   builder: (context) {
+              //     return const TaskListsSheet();
+              //   },
+              //   shape: const RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.vertical(
+              //       top: Radius.circular(10.0),
+              //     ),
+              //   ),
+              //   isScrollControlled: true,
+              // );
             },
           ),
           const Spacer(),
@@ -50,16 +47,25 @@ class TasksBottomAppBar extends StatelessWidget {
                       ),
                       ListTile(
                         title: const Text('Mark all as complete'),
-                        onTap: () {
-                          context.read<TasksModel>().toggleAllTodos();
-
+                        onTap: () async {
+                          // context.read<TasksModel>().toggleAllTodos();
+                          // await context.read<TodoService>().toggleAllTodos(
+                          //       context.read<User>(),
+                          //       context.read<TodoListValueModel>().value!,
+                          //       true,
+                          //     );
                           Navigator.pop(context);
                         },
                       ),
                       ListTile(
                         title: const Text('Clear all completed'),
-                        onTap: () {
-                          context.read<TasksModel>().clearCompletedTodos();
+                        onTap: () async {
+                          // context.read<TasksModel>().clearCompletedTodos();
+                          // await context.read<TodoService>().clearCompletedTodos(
+                          //       context.read<User>(),
+                          //       context.read<TodoListValueModel>().value!,
+                          //     );
+
                           Navigator.pop(context);
                         },
                       ),
@@ -70,30 +76,31 @@ class TasksBottomAppBar extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditTaskListScreen(),
+                              builder: (context) => EditTodoListScreen(
+                                todoList: context.read<List<TodoList>>().first,
+                              ),
                             ),
                           );
                         },
                       ),
                       // Divider(),
                       ListTile(
-                        enabled: context.select((TasksModel model) =>
-                            model.isDeletableCurrentTodoList()),
-                        // leading: Icon(Icons.clear_all),
-
-                        title: Text(
+                        // enabled: context.read<TodoListValueModel>().isRemovable,
+                        title: const Text(
                           'Delete task list',
                           style: TextStyle(
-                            color: context.select((TasksModel model) =>
-                                    model.isDeletableCurrentTodoList())
-                                ? Colors.red
-                                : Theme.of(context).disabledColor,
-                          ),
+                              // color:
+                              //     context.read<TodoListValueModel>().isRemovable
+                              //         ? Colors.red
+                              //         : Theme.of(context).disabledColor,
+                              ),
                         ),
                         onTap: () {
-                          context
-                              .read<TasksModel>()
-                              .remoRemoveCurrentTodoList();
+                          // TodoListService(
+                          //   user: context.read<User>(),
+                          // ).removeTodoList(
+                          //   context.read<TodoListValueModel>().value!,
+                          // );
                           Navigator.pop(context);
                         },
                       ),
