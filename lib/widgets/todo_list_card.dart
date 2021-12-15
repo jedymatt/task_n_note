@@ -41,6 +41,5 @@ class _TodoListCardState extends State<TodoListCard> {
         ),
       ),
     );
-    ;
   }
 }
