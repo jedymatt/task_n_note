@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:task_n_note/widgets/account_dialog.dart';
 
 import '../widgets/add_todo_list_fab.dart';
 import '../widgets/note/add_note_fab.dart';
 import '../widgets/note/note_list_view.dart';
 import '../widgets/task/todo_list_view.dart';
-import 'account_screen.dart';
+import 'menu_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -62,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AccountScreen(),
+                          builder: (context) => const MenuScreen(),
                         ),
                       );
                       // showDialog(
