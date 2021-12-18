@@ -101,7 +101,7 @@ class _AppState extends State<App> {
       primarySwatch: Colors.indigo,
       shadowColor: Colors.indigoAccent,
       appBarTheme: AppBarTheme.of(context).copyWith(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).primaryColorDark,
         elevation: 0.0,
       ),
