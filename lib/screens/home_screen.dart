@@ -6,6 +6,7 @@ import '../widgets/add_todo_list_fab.dart';
 import '../widgets/note/add_note_fab.dart';
 import '../widgets/note/note_list_view.dart';
 import '../widgets/task/todo_list_view.dart';
+import 'account_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -58,12 +59,18 @@ class _HomeScreenState extends State<HomeScreen>
                 actions: [
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const AccountDialog();
-                        },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AccountScreen(),
+                        ),
                       );
+                      // showDialog(
+                      //   context: context,
+                      //   builder: (context) {
+                      //     return const AccountDialog();
+                      //   },
+                      // );
                     },
                     icon: const CircleAvatar(
                       child: Icon(Icons.person),

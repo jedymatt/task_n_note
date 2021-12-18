@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/user.dart';
-import 'package:task_n_note/screens/manage_account_screen.dart';
+import 'package:task_n_note/screens/account_screen.dart';
 import 'package:task_n_note/screens/setting_screen.dart';
 import 'package:task_n_note/services/auth_service.dart';
 
@@ -33,7 +33,7 @@ class AccountDialog extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const ManageAccountScreen(),
+                builder: (context) => const AccountScreen(),
               ),
             );
           },

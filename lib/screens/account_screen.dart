@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/models.dart';
 
-class ManageAccountScreen extends StatefulWidget {
-  const ManageAccountScreen({Key? key}) : super(key: key);
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
-  _ManageAccountScreenState createState() => _ManageAccountScreenState();
+  _AccountScreenState createState() => _AccountScreenState();
 }
 
-class _ManageAccountScreenState extends State<ManageAccountScreen> {
+class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
