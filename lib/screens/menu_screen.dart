@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_n_note/screens/account_info_screen.dart';
 import 'package:task_n_note/screens/dark_mode_screen.dart';
 import 'package:task_n_note/services/auth_service.dart';
 
@@ -13,13 +14,22 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Menu'),
+      ),
       body: ListView(
         children: [
           ListTile(
             leading: const Icon(Icons.account_circle),
             title: const Text('Account Information'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AccountInfoScreen(),
+                ),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.dark_mode),
