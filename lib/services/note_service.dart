@@ -8,10 +8,11 @@ class NoteService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late CollectionReference<Map<String, dynamic>> _ref;
   final User user;
+  final String path;
 
   NoteService({
     required this.user,
-  });
+  }) : path = 'users/${user.uid}/notes';
 
   Stream<List<Note>> get notes {
     _ref = _db.collection(DatabasePath.notes(user.uid));
