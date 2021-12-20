@@ -23,14 +23,6 @@ class _AddNoteFabState extends State<AddNoteFab> {
       child: const Icon(
         Icons.add,
       ),
-      foregroundColor: Theme.of(context).colorScheme.primary,
-      backgroundColor: Theme.of(context).colorScheme.onBackground,
-      shape: CircleBorder(
-        side: BorderSide(
-          width: 2.0,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
     );
   }
 }

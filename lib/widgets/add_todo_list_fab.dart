@@ -11,22 +11,18 @@ class AddTodoListFab extends StatefulWidget {
 class _AddTodoListFabState extends State<AddTodoListFab> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Object>(
-        stream: null,
-        builder: (context, snapshot) {
-          return FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AddTodoListScreen(),
-                ),
-              );
-            },
-            child: const Icon(
-              Icons.add,
-            ),
-          );
-        });
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AddTodoListScreen(),
+          ),
+        );
+      },
+      child: const Icon(
+        Icons.add,
+      ),
+    );
   }
 }
