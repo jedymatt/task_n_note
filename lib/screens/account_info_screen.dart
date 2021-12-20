@@ -18,17 +18,6 @@ class AccountInfoScreen extends StatelessWidget {
               ListTile(
                 title: Text(value.email ?? 'Email not set'),
               ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.red,
-                  ),
-                  onPressed: () {},
-                  child: const Text('Delete Account'),
-                ),
-              ),
             ],
           ),
         );
