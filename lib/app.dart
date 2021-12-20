@@ -24,51 +24,10 @@ class _AppState extends State<App> {
     return Consumer<DarkModeProvider>(
       builder: (context, darkMode, child) {
         return MaterialApp(
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
           theme: _buildThemeData(),
           darkTheme: _buildDarkThemeData(),
           themeMode: getThemeMode(),
-          // home: StreamBuilder<User?>(
-          //   stream: AuthService().user,
-          //   builder: (context, snapshot) {
-          //     if (snapshot.hasError) {
-          //       return const Scaffold(
-          //         body: Center(
-          //           child: Text('Unknown error has occured'),
-          //         ),
-          //       );
-          //     }
-
-          //     if (snapshot.connectionState != ConnectionState.active) {
-          //       return const Scaffold(
-          //         body: Center(
-          //           child: CircularProgressIndicator(),
-          //         ),
-          //       );
-          //     }
-          //     if (snapshot.hasData) {
-          //       final user = snapshot.requireData;
-          //       if (user != null) {
-          //         return Provider<User>.value(
-          //           builder: (context, child) {
-          //             return const HomeScreen();
-          //           },
-          //           value: user,
-          //         );
-          //       } else {
-          //         return const LoginScreen();
-          //       }
-          //     } else {
-          //       return const LoginScreen();
-          //     }
-
-          //     // Otherwise, show something whilst waiting for initialization to complete
-          //     // return const Scaffold(
-          //     //   body: Center(
-          //     //     child: CircularProgressIndicator(),
-          //     //   ),
-          //     // );
-          //   },
           home: FutureBuilder(
             future: _initialization,
             builder: (context, snapshot) {
