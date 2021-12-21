@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:task_n_note/enums.dart';
+import 'package:task_n_note/core/enums.dart';
 import 'package:task_n_note/providers/dark_mode_provider.dart';
 
 import 'models/models.dart';

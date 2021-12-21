@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../enums.dart';
+import '../core/enums.dart';
 
 class DarkModePreference {
   static const darkModeKey = 'dark_mode_status';

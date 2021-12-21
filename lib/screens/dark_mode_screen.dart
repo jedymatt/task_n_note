@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/providers/dark_mode_provider.dart';
 
-import '../enums.dart';
+import '../core/enums.dart';
 
 class DarkModeScreen extends StatefulWidget {
   const DarkModeScreen({Key? key}) : super(key: key);

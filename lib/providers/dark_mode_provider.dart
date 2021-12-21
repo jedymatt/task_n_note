@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../local_storage/dark_mode_preference.dart';
-import '../enums.dart';
+import '../core/enums.dart';
 
 class DarkModeProvider extends ChangeNotifier {
   final _darkModePreference = DarkModePreference();
