@@ -56,7 +56,7 @@ class _DetailTodoListScreenState extends State<DetailTodoListScreen> {
         child: Consumer<List<Todo>>(
           builder: (context, todos, child) {
             return ListView.builder(
-              key: ObjectKey(todos),
+              key: ObjectKey(todos.hashCode),
               controller: _scrollController,
               itemCount: todos.length,
               itemBuilder: (context, index) {
