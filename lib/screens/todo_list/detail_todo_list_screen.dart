@@ -21,8 +21,15 @@ class DetailTodoListScreen extends StatefulWidget {
 }
 
 class _DetailTodoListScreenState extends State<DetailTodoListScreen> {
+  late ScrollController _scrollController;
+  double _scrollOffset = 0.0;
+
   @override
   Widget build(BuildContext context) {
+    _scrollController = ScrollController(
+      initialScrollOffset: _scrollOffset,
+    );
+
     final todoList = widget.todoList;
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +56,8 @@ class _DetailTodoListScreenState extends State<DetailTodoListScreen> {
         child: Consumer<List<Todo>>(
           builder: (context, todos, child) {
             return ListView.builder(
-              key: UniqueKey(),
+              key: ObjectKey(todos),
+              controller: _scrollController,
               itemCount: todos.length,
               itemBuilder: (context, index) {
                 return CheckerListTile(
@@ -61,17 +69,23 @@ class _DetailTodoListScreenState extends State<DetailTodoListScreen> {
                       user: context.read<User>(),
                       todoList: todoList,
                     ).updateTodo(todo);
+
+                    setState(() {
+                      _scrollOffset = _scrollController.offset;
+                    });
                   },
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Provider.value(
-                              value: todoList,
-                              child: DetailTodoScreen(
-                                todo: todos[index],
-                              )),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Provider.value(
+                          value: todoList,
+                          child: DetailTodoScreen(
+                            todo: todos[index],
+                          ),
+                        ),
+                      ),
+                    );
                   },
                 );
               },
