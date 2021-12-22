@@ -45,7 +45,9 @@ class _AppState extends State<App> {
                 if (user == null) {
                   return const LoginScreen();
                 } else {
-                  return const HomeScreen();
+                  return const HomeScreen(
+                    title: 'Task n\' Note',
+                  );
                 }
               }
               // Otherwise, show something whilst waiting for initialization to complete
