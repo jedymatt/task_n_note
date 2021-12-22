@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/models.dart';
-import 'package:task_n_note/screens/add_todo_screen.dart';
-import 'package:task_n_note/screens/detail_todo_screen.dart';
-import 'package:task_n_note/screens/edit_todo_list_screen.dart';
+import 'package:task_n_note/screens/todo/add_todo_screen.dart';
+import 'package:task_n_note/screens/todo/detail_todo_screen.dart';
+import 'package:task_n_note/screens/todo_list/edit_todo_list_screen.dart';
 import 'package:task_n_note/services/todo_list_service.dart';
 import 'package:task_n_note/services/todo_service.dart';
 import 'package:task_n_note/widgets/checker_list_tile.dart';

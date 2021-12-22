@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/models.dart';
-import 'package:task_n_note/screens/detail_todo_list_screen.dart';
+import 'package:task_n_note/screens/todo_list/detail_todo_list_screen.dart';
 import 'package:task_n_note/services/todo_list_service.dart';
 
 class TodoListView extends StatelessWidget {

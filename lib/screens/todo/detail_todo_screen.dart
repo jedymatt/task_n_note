@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:task_n_note/models/models.dart';
 import 'package:task_n_note/services/todo_service.dart';
 
-import '../widgets/text_button_toggle.dart';
+import '../../widgets/text_button_toggle.dart';
 
 class DetailTodoScreen extends StatefulWidget {
   final Todo todo;

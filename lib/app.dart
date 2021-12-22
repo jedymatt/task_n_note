@@ -6,8 +6,8 @@ import 'package:task_n_note/core/enums.dart';
 import 'package:task_n_note/providers/dark_mode_provider.dart';
 
 import 'models/models.dart';
+import 'screens/auth/login_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);

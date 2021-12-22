@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_n_note/models/models.dart';
-import 'package:task_n_note/screens/detail_todo_list_screen.dart';
+import 'package:task_n_note/screens/todo_list/detail_todo_list_screen.dart';
 
 class TodoListCard extends StatefulWidget {
   final TodoList todoList;

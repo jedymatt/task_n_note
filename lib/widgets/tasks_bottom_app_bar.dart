@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_n_note/models/models.dart';
-import 'package:task_n_note/screens/edit_todo_list_screen.dart';
+import 'package:task_n_note/screens/todo_list/edit_todo_list_screen.dart';
 
 @Deprecated('No Longer used')
 class TasksBottomAppBar extends StatelessWidget {

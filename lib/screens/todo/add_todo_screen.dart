@@ -4,7 +4,7 @@ import 'package:task_n_note/models/todo_list.dart';
 import 'package:task_n_note/models/user.dart';
 import 'package:task_n_note/services/todo_service.dart';
 
-import '../models/todo.dart';
+import '../../models/todo.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final TodoList todoList;
