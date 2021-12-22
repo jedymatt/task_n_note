@@ -1,10 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_n_note/screens/register_screen.dart';
 import 'package:task_n_note/services/auth_service.dart';
 
-import '../app.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -98,12 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           return;
                         }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const App(),
-                          ),
-                        );
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                     ),
                     const SizedBox(height: 10.0),
